@@ -5,3 +5,8 @@
 
 # The currently active project is available via $GK_ACTIVE_PROJECT
 
+# Display repo status
+git status
+
+
+alias kompile='npm run dev' 
