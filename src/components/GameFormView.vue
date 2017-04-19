@@ -31,12 +31,27 @@
                     <div class="form-error-block" v-if="errors.start_date">
                         <p class="form-error" v-for="error in errors.start_date">{{ error }}</p>
                     </div>
+
+                    <el-date-picker
+                          v-model="fields.start_date"
+                          type="datetime"
+                          format="yyyy/MM/dd HH:mm"
+                          placeholder="Select start date and time"
+                          :picker-options="pickerOptions">
+                    </el-date-picker>
                 </div>
                 <!-- End date -->
                 <div class="form-group">
                     <div class="form-error-block" v-if="errors.end_date">
                         <p class="form-error" v-for="error in errors.end_date">{{ error }}</p>
                     </div>
+                    <el-date-picker
+                          v-model="fields.end_date"
+                          type="datetime"
+                          format="yyyy/MM/dd HH:mm"
+                          placeholder="Select start date and time"
+                          :picker-options="pickerOptions">
+                    </el-date-picker>
                 </div>
                 <div class="form-group">
                     <input type="submit" name="submit" value="Create">
@@ -58,14 +73,39 @@ export default {
             fields: {
                 title: '',
                 description: '',
-                start_date: 'today',
-                end_date: 'today + 7'
+                start_date: '',
+                end_date: ''
 
             },
 
             errors: {
 
-            }
+            },
+
+            pickerOptions: {
+              shortcuts: [{
+                text: 'Today',
+                onClick(picker) {
+                  picker.$emit('pick', new Date());
+                }
+              },
+              {
+                text: 'Tomorrow',
+                onClick(picker) {
+                  const date = new Date();
+                  date.setTime(date.getTime() + 3600 * 1000 * 24);
+                  picker.$emit('pick', date);
+                }
+              },
+              {
+                text: 'Next week',
+                onClick(picker) {
+                  const date = new Date();
+                  date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+                  picker.$emit('pick', date);
+                }
+              }]
+            },
 
         }
     },
