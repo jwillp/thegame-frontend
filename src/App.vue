@@ -27,12 +27,16 @@
 </template>
 
 <script>
-import auth from './api'
+import api from './api'
+
+// Check the users auth status when the app starts
+api.checkAuth()
+
 export default {
   name: 'app',
   data() {
     return {
-      user: auth.user
+      user: api.user
     }
   },
 }

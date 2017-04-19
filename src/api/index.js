@@ -33,7 +33,7 @@ export default {
 
         // Redirect to a specified route
         if(redirect) {
-          router.go(redirect)
+          router.push(redirect)
         }
       },
       // error callback
