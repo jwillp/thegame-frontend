@@ -7,7 +7,7 @@ import router from '../router'
 const API_URL = 'http://localhost/thegame/web/app_dev.php/api'
 const LOGIN_URL = API_URL + '/users/login'
 const REGISTER_URL = API_URL + '/users/register'
-
+const CREATE_GAME_URL = API_URL + '/games/new'
 export default {
 
   // User object will let us check authentication status
@@ -23,10 +23,9 @@ export default {
           'Authorization': 'Basic ' + btoa(creds.username + ':' + creds.password)
         }
     }
-    console.log(options)
     context.$http.post(LOGIN_URL, creds, options).then(
       function(response) {
-        localStorage.setItem('token', response.token)
+        localStorage.setItem('token', response.body.token)
         self.user.authenticated = true
 
         successCallback(response)
@@ -70,5 +69,16 @@ export default {
     return {
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
+  },
+
+
+
+  createGame(context, data, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.post(CREATE_GAME_URL, data, options)
+             .then(successCallback, errorCallback)
   }
 }

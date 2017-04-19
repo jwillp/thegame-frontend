@@ -104,7 +104,7 @@ export default {
                 function(response) {
                     self.errors = response.body.errors
                 }
-            );
+            )
         }
     }
 }

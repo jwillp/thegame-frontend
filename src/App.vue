@@ -8,10 +8,13 @@
       </div>
       <ul id="header-navigation">
         <li><router-link :to="{name:'home'}">Home</router-link></li>
+
+        <!-- Unauthenticated -->
         <li v-if="!user.authenticated"><router-link :to="{name:'register'}" >Register</router-link></li>
         <li v-if="!user.authenticated"><router-link :to="{name:'login'}">Login</router-link></li>
+        <!-- Authenticated -->
+        <li v-if="user.authenticated"><router-link :to="{name:'games'}">Games</router-link></li>
         <li v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></li>
-        <li><a href="http://vuejs.org">VueJs docs</a></li>
       </ul>
     </div> <!-- /header -->
     <div id="sidebar">
