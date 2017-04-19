@@ -1,7 +1,27 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <div id="header">
+      <div id="header-logo">
+        <router-link :to="{name:'home'}">
+          <img src="./assets/logo.png" width="50px">
+        </router-link>
+      </div>
+      <ul id="header-navigation">
+        <li><router-link :to="{name:'home'}">Home</router-link></li>
+        <li><router-link :to="{name:'register'}">Register</router-link></li>
+        <li><router-link :to="{name:'login'}">Login</router-link></li>
+        <li><a href="http://vuejs.org">VueJs docs</a></li>
+      </ul>
+    </div> <!-- /header -->
+    <div id="sidebar">
+      
+    </div>
+    <router-view
+      class="view"
+      keep-alive 
+      transition
+      transition-mode="out-in">
+    </router-view>
   </div>
 </template>
 
@@ -16,7 +36,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
