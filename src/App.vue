@@ -8,17 +8,18 @@
       </div>
       <ul id="header-navigation">
         <li><router-link :to="{name:'home'}">Home</router-link></li>
-        <li><router-link :to="{name:'register'}">Register</router-link></li>
-        <li><router-link :to="{name:'login'}">Login</router-link></li>
+        <li v-if="!user.authenticated"><router-link :to="{name:'register'}" >Register</router-link></li>
+        <li v-if="!user.authenticated"><router-link :to="{name:'login'}">Login</router-link></li>
+        <li v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></li>
         <li><a href="http://vuejs.org">VueJs docs</a></li>
       </ul>
     </div> <!-- /header -->
     <div id="sidebar">
-      
+
     </div>
     <router-view
       class="view"
-      keep-alive 
+      keep-alive
       transition
       transition-mode="out-in">
     </router-view>
@@ -26,8 +27,14 @@
 </template>
 
 <script>
+import auth from './api'
 export default {
-  name: 'app'
+  name: 'app',
+  data() {
+    return {
+      user: auth.user
+    }
+  },
 }
 </script>
 

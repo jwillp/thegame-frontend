@@ -1,4 +1,4 @@
-// Authentication Service
+// Service to connect to thegame api server
 // Handles authentication and storage of JWT
 
 import router from '../router'
@@ -16,36 +16,39 @@ export default {
   },
 
   // Send a request to the login URL and save the returned JWT
-  login(context, creds, redirect) {
-    context.$http.post(LOGIN_URL, creds, (data) => {
-      localStorage.setItem('token', data.token)
+  login(context, creds, redirect, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: {
+          'Authorization': 'Basic ' + btoa(creds.username + ':' + creds.password)
+        }
+    }
+    console.log(options)
+    context.$http.post(LOGIN_URL, creds, options).then(
+      function(response) {
+        localStorage.setItem('token', response.token)
+        self.user.authenticated = true
 
-      this.user.authenticated = true
+        successCallback(response)
 
-      // Redirect to a specified route
-      if(redirect) {
-        router.go(redirect)
+        // Redirect to a specified route
+        if(redirect) {
+          router.go(redirect)
+        }
+      },
+      // error callback
+      function(response) {
+        errorCallback(response)
       }
-
-    }).error((err) => {
-      context.error = err
-    })
+    );
   },
 
-  register(context, creds, redirect) {
-    context.$http.post(REGISTER_URL, creds, (data) => {
-      localStorage.setItem('token', data.token)
-
-      this.user.authenticated = true
-
-      if(redirect) {
-        router.go(redirect)
-      }
-
-    }).error((err) => {
-      context.error = err
-    })
+  // Send data to the register url to register a user
+  register(context, creds, successCallback, errorCallback) {
+    context.$http.post(REGISTER_URL, creds)
+                 .then(successCallback, errorCallback)
   },
+
   // To log out, we just need to remove the token
   logout() {
     localStorage.removeItem('token')

@@ -17,7 +17,8 @@
                     v-model="credentials.username"
                     type="text"
                     name="username"
-                    placeholder="Enter username">
+                    placeholder="Enter username"
+                    required>
             </div>
 
             <div class="form-group">
@@ -28,7 +29,8 @@
                     v-model="credentials.email"
                     type="email"
                     name="email"
-                    placeholder="Enter email">
+                    placeholder="Enter email"
+                    required>
             </div>
 
             <div class="form-group">
@@ -39,7 +41,8 @@
                     v-model="credentials.plain_password"
                     type="password"
                     name="password"
-                    placeholder="Enter password">
+                    placeholder="Enter password"
+                    required>
             </div>
 
             <div class="form-group">
@@ -50,7 +53,8 @@
                     v-model="credentials.plain_password_confirm"
                     type="password"
                     name="password_confirmation"
-                placeholder="Confirm password">
+                    placeholder="Confirm password"
+                    required>
             </div>
 
             <div class="form-group">
@@ -61,7 +65,7 @@
 </template>
 
 <script>
-import auth from '../auth'
+import api from '../api'
 export default {
     data: function() {
         return {
@@ -81,7 +85,7 @@ export default {
     methods: {
         registerUser: function() {
 
-            // Test if passwords are the same
+            // Test if passwords are the same (since server does not test for this)
             if(this.credentials.plain_password != this.credentials.plain_password_confirm) {
 
                 this.errors = {
@@ -90,19 +94,17 @@ export default {
                 return
             }
 
-            var creds = this.credentials
             var self = this
-            var url = 'http://localhost/thegame/web/app_dev.php/api/users/register'
-            this.$http.post(url, creds).then(response => {
-                // success call back
-                // TODO display registration complete page
-                self.registration_success = true
-              },
-              response => {
-                // error callback
-                self.errors = response.body.errors
-                console.log(response)
-              })
+            var response = api.register(this, this.credentials,
+                // SUCCES CALLBACK
+                function(response) {
+                    self.registration_success = true
+                },
+                // ERROR CALLBACK
+                function(response) {
+                    self.errors = response.body.errors
+                }
+            );
         }
     }
 }
