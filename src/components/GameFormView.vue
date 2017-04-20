@@ -8,23 +8,26 @@
                     <div class="form-error-block" v-if="errors.title">
                         <p class="form-error" v-for="error in errors.title">{{ error }}</p>
                     </div>
-                    <input
+                    <el-input
                         v-model="fields.title"
                         type="text"
                         name="title"
                         placeholder="Enter title"
                         required>
+                    </el-input>
                 </div>
                 <!-- description -->
                 <div class="form-group">
                     <div class="form-error-block" v-if="errors.description">
                         <p class="form-error" v-for="error in errors.description">{{ error }}</p>
                     </div>
-                    <textarea v-model="fields.description"
-                              name="description"
-                              placeholder="Enter description"
-                              required>
-                    </textarea>
+                    <el-input
+                        type="textarea"
+                        v-model="fields.description"
+                        name="description"
+                        placeholder="Enter description"
+                        required>
+                    </el-input>
                 </div>
                 <!-- start date -->
                 <div class="form-group">
@@ -54,7 +57,7 @@
                     </el-date-picker>
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="submit" value="Create">
+                    <el-button type="primary" @click="createGame">Create</el-button>
                 </div>
         </form>
         </div>

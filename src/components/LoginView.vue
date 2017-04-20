@@ -7,24 +7,26 @@
                     <p class="form-error" v-for="error in errors">{{ error }}</p>
                 </div>
             <div class="form-group">
-                <input
+                <el-input
                     v-model="credentials.username"
                     type="text"
                     name="username"
                     placeholder="Enter username"
                     required>
+                </el-input>
             </div>
 
             <div class="form-group">
-                <input
+                <el-input
                     v-model="credentials.password"
                     type="password"
                     name="password"
                     placeholder="Enter password"
                     required>
+                </el-input>
             </div>
             <div class="form-group">
-                <input type="submit" name="submit" value="Login">
+                <el-button type="primary" @click="login">Login</el-button>
             </div>
         </form>
     </div>

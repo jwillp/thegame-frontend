@@ -13,52 +13,56 @@
                 <div class="form-error-block" v-if="errors.username">
                     <p class="form-error" v-for="error in errors.username">{{ error }}</p>
                 </div>
-                <input
+                <el-input
                     v-model="credentials.username"
                     type="text"
                     name="username"
                     placeholder="Enter username"
                     required>
+                </el-input>
             </div>
 
             <div class="form-group">
                 <div class="form-error-block" v-if="errors.email">
                     <p class="form-error" v-for="error in errors.email">{{ error }}</p>
                 </div>
-                <input
+                <el-input
                     v-model="credentials.email"
                     type="email"
                     name="email"
                     placeholder="Enter email"
                     required>
+                </el-input>
             </div>
 
             <div class="form-group">
                 <div class="form-error-block" v-if="errors.plain_password">
                     <p class="form-error" v-for="error in errors.plain_password.first">{{ error }}</p>
                 </div>
-                <input
+                <el-input
                     v-model="credentials.plain_password"
                     type="password"
                     name="password"
                     placeholder="Enter password"
                     required>
+                </el-input>
             </div>
 
             <div class="form-group">
                 <div class="form-error-block" v-if="errors.plain_password_confirm">
                     <p class="form-error" v-for="error in errors.plain_password_confirm">{{ error }}</p>
                 </div>
-                <input
+                <el-input
                     v-model="credentials.plain_password_confirm"
                     type="password"
                     name="password_confirmation"
                     placeholder="Confirm password"
                     required>
+                </el-input>
             </div>
 
             <div class="form-group">
-                <input type="submit" name="submit" value="Register">
+                <el-button type="primary" @click="registerUser">Register</el-button>
             </div>
         </form>
     </div>

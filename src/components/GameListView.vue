@@ -1,7 +1,7 @@
 <template>
     <div id="gamelist-view">
         <div class="page-controls">
-            <button>New Game</button>
+            <el-button type="primary">New Game</el-button>
         </div> <!-- /page-controls -->
         <div class="games">
             <ul class="list">
