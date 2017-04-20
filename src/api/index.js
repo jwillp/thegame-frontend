@@ -7,7 +7,10 @@ import router from '../router'
 const API_URL = 'http://localhost/thegame/web/app_dev.php/api'
 const LOGIN_URL = API_URL + '/users/login'
 const REGISTER_URL = API_URL + '/users/register'
+
 const CREATE_GAME_URL = API_URL + '/games/new'
+const GET_GAME_URL = API_URL + '/games'
+
 export default {
 
   // User object will let us check authentication status
@@ -80,5 +83,14 @@ export default {
     }
     context.$http.post(CREATE_GAME_URL, data, options)
              .then(successCallback, errorCallback)
+  },
+
+  getGames(context, successCallback, errorCallback){
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_GAME_URL, options)
+                 .then(successCallback, errorCallback)
   }
 }

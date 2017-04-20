@@ -75,12 +75,9 @@ export default {
                 description: '',
                 start_date: '',
                 end_date: ''
-
             },
 
-            errors: {
-
-            },
+            errors: {},
 
             pickerOptions: {
               shortcuts: [{
@@ -106,7 +103,6 @@ export default {
                 }
               }]
             },
-
         }
     },
 
@@ -126,9 +122,5 @@ export default {
             )
         }
     },
-
-    components: {
-    }
-
 }
 </script>

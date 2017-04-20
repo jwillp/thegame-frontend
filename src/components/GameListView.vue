@@ -5,8 +5,9 @@
         </div> <!-- /page-controls -->
         <div class="games">
             <ul class="list">
+                {{ count }}
                 <li v-for="game in games">
-                    {{ game.title }} from {{ game.start_date }} to {{ game.end_date }}
+                    {{ game.title  }} from {{ format(game.start_date) }} to {{ format(game.end_date) }}
                 </li>
             </ul>
         </div>
@@ -15,13 +16,50 @@
 </template>
 
 <script>
+import api from '../api'
+import moment from 'moment'
 import GameFormView from './GameFormView'
+
 export default {
     data: () => {
         return {
-            games: []
+            games: [],
+            count: -1,
+
+            fetchLock: false
         }
     },
+
+    created: function() {
+        var self = this
+        this.fetchData(true)
+        setInterval(function(){ self.fetchData() }, 1000 * 10)
+    },
+
+    methods: {
+        fetchData: function(force = false) {
+            // lock requests so we dont spam
+            if(this.fetchLock && !force) {
+                return
+            }
+            this.fetchLock = true
+            console.debug('fetch')
+            self = this
+            api.getGames(this, function(response) {
+                console.log("fetch callback")
+                self.games = response.body.items
+                self.count = response.body.count
+                self.fetchLock = false
+            }, function(responese){
+                console.log(responese)
+            })
+        },
+
+        format: function(date) {
+          return moment(date).format("YYYY/MM/DD [at] HH:mm")
+        }
+    },
+
     components: {
         GameFormView
     }
