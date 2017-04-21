@@ -3,13 +3,17 @@
         <div class="page-controls">
             <el-button type="primary" @click="dialogNewGameVisible = true">New Game</el-button>
         </div> <!-- /page-controls -->
+        <hr>
         <div class="games" v-loading="gameLoading">
-            <ul class="list">
-                {{ count }}
-                <li v-for="game in games">
-                    {{ game.title  }} from {{ format(game.start_date) }} to {{ format(game.end_date) }}
-                </li>
-            </ul>
+            <el-card class="box-card" v-for="game in games">
+              <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">{{ game.title }}</span>
+                <el-button style="float: right;" type="primary">Open</el-button>
+              </div>
+              <div class="text item">
+                from {{ format(game.start_date) }} to {{ format(game.end_date) }}
+              </div>
+            </el-card>
         </div>
 
         <GameFormDialogView v-model="dialogNewGameVisible"></GameFormDialogView>
@@ -75,3 +79,19 @@ export default {
     }
 }
 </script>
+
+<style>
+    .box-card {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+</style>
