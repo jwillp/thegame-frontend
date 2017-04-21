@@ -1,22 +1,26 @@
 <template>
   <div id="app">
     <div id="header">
-      <div id="header-logo">
-        <router-link :to="{name:'home'}">
-          <img src="./assets/logo.png" width="50px">
-        </router-link>
-      </div>
-      <ul id="header-navigation">
-        <li><router-link :to="{name:'home'}">Home</router-link></li>
+      <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu-item index="1">
+          <div id="header-logo">
+            <router-link :to="{name:'home'}">
+              <img src="./assets/logo.png" width="50px">
+            </router-link>
+          </div>
+        </el-menu-item>
+        <el-menu-item><router-link :to="{name:'home'}">Home</router-link></el-menu-item>
 
         <!-- Unauthenticated -->
-        <li v-if="!user.authenticated"><router-link :to="{name:'register'}" >Register</router-link></li>
-        <li v-if="!user.authenticated"><router-link :to="{name:'login'}">Login</router-link></li>
+        <el-menu-item v-if="!user.authenticated"><router-link :to="{name:'register'}" >Register</router-link></el-menu-item>
+        <el-menu-item v-if="!user.authenticated"><router-link :to="{name:'login'}">Login</router-link></el-menu-item>
         <!-- Authenticated -->
-        <li v-if="user.authenticated"><router-link :to="{name:'games'}">Games</router-link></li>
-        <li v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></li>
-      </ul>
+        <el-menu-item v-if="user.authenticated"><router-link :to="{name:'games'}">Games</router-link></el-menu-item>
+        <el-menu-item v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></el-menu-item>
+      </el-menu>
+      <div class="line"></div>
     </div> <!-- /header -->
+
     <div id="sidebar">
 
     </div>
@@ -46,11 +50,14 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0px;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 </style>
