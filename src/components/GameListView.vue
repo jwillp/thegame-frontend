@@ -1,9 +1,9 @@
 <template>
     <div id="gamelist-view">
         <div class="page-controls">
-            <el-button type="primary">New Game</el-button>
+            <el-button type="primary" @click="dialogNewGameVisible = true">New Game</el-button>
         </div> <!-- /page-controls -->
-        <div class="games">
+        <div class="games" v-loading="gameLoading">
             <ul class="list">
                 {{ count }}
                 <li v-for="game in games">
@@ -11,14 +11,15 @@
                 </li>
             </ul>
         </div>
-        <GameFormView title="Create new game" url="s"></GameFormView>
+
+        <GameFormDialogView v-model="dialogNewGameVisible"></GameFormDialogView>
     </div> <!-- /gamelist-view -->
 </template>
 
 <script>
 import api from '../api'
 import moment from 'moment'
-import GameFormView from './GameFormView'
+import GameFormDialogView from './GameFormDialogView'
 
 export default {
     data: () => {
@@ -26,7 +27,10 @@ export default {
             games: [],
             count: -1,
 
-            fetchLock: false
+            fetchLock: false,
+            gameLoading: true,
+
+            dialogNewGameVisible: false
         }
     },
 
@@ -43,15 +47,21 @@ export default {
                 return
             }
             this.fetchLock = true
-            console.debug('fetch')
             self = this
             api.getGames(this, function(response) {
-                console.log("fetch callback")
                 self.games = response.body.items
                 self.count = response.body.count
                 self.fetchLock = false
+                // initial loading
+                if(self.gameLoading) {
+                    self.gameLoading = false
+                }
             }, function(responese){
                 console.log(responese)
+                // initial loading
+                if(self.gameLoading) {
+                    self.gameLoading = false
+                }
             })
         },
 
@@ -61,7 +71,7 @@ export default {
     },
 
     components: {
-        GameFormView
+        GameFormDialogView
     }
 }
 </script>
