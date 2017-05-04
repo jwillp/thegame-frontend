@@ -9,7 +9,8 @@ const LOGIN_URL = API_URL + '/users/login'
 const REGISTER_URL = API_URL + '/users/register'
 
 const CREATE_GAME_URL = API_URL + '/games/new'
-const GET_GAME_URL = API_URL + '/games'
+const GET_GAMES_URL = API_URL + '/games'
+const GET_GAME_URL = API_URL + '/games/'
 
 export default {
 
@@ -90,7 +91,16 @@ export default {
     var options = {
       headers: self.getAuthHeader()
     }
-    context.$http.get(GET_GAME_URL, options)
+    context.$http.get(GET_GAMES_URL, options)
+                 .then(successCallback, errorCallback)
+  },
+
+  getGame(context, gameId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_GAME_URL + gameId, options)
                  .then(successCallback, errorCallback)
   }
 }

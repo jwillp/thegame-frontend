@@ -6,6 +6,7 @@ import RegisterView from '@/components/RegisterView'
 import LoginView from '@/components/LoginView'
 import LogoutView from '@/components/LogoutView'
 import GameListView from '@/components/GameListView'
+import GameView from '@/components/GameView'
 
 Vue.use(Router)
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/games',
       name: 'games',
       component: GameListView
+    },
+    {
+      path: '/games/:id',
+      name: 'games_view',
+      component: GameView
     },
   ]
 })

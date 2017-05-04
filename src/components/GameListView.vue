@@ -5,13 +5,13 @@
         </div> <!-- /page-controls -->
         <hr>
         <div class="games" v-loading="gameLoading">
-            <el-card class="box-card" v-for="game in games">
+            <el-card class="box-card" v-for="game in games" :key="game.id">
               <div slot="header" class="clearfix">
                 <span style="line-height: 36px;">{{ game.title }}</span>
-                <el-button style="float: right;" type="primary">Open</el-button>
+                <el-button style="float: right;" type="primary" @click="viewGame(game)">Open</el-button>
               </div>
               <div class="text item">
-                from {{ format(game.start_date) }} to {{ format(game.end_date) }}
+                from {{ format(game.start_date) }} to {{ format(game.end_date, true) }}
               </div>
             </el-card>
         </div>
@@ -22,6 +22,7 @@
 
 <script>
 import api from '../api'
+import router from '../router'
 import moment from 'moment'
 import GameFormDialogView from './GameFormDialogView'
 
@@ -69,9 +70,18 @@ export default {
             })
         },
 
-        format: function(date) {
-          return moment(date).format("YYYY/MM/DD [at] HH:mm")
+        format: function(date, displayTime) {
+            var dateFormat = "YYYY/MM/DD"
+            if(displayTime)
+                dateFormat = "YYYY/MM/DD [at] HH:mm"
+
+            return moment(date).format(dateFormat)
+        },
+
+        viewGame: function(game) {
+            router.replace('/games/' + game.id)
         }
+
     },
 
     components: {
