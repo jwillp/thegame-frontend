@@ -7,6 +7,7 @@ import LoginView from '@/components/LoginView'
 import LogoutView from '@/components/LogoutView'
 import GameListView from '@/components/GameListView'
 import GameView from '@/components/GameView'
+import ChallengeView from '@/components/ChallengeView'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/games/:id',
       name: 'games_view',
       component: GameView
+    },
+    {
+      path: '/challenge/:id',
+      name: 'challenge_view',
+      component: ChallengeView
     },
   ]
 })

@@ -53,17 +53,20 @@ export default {
             fetchGameDataLock: false,
             gameDataLoading: true,
 
+            fetchGameInterval: undefined,
 
             dialogNewGameVisible: false
         }
     },
 
     created: function() {
-        this.id = this.$route.params.id
-
         var self = this
         this.fetchGameData(true)
-        setInterval(function(){ self.fetchGameData() }, 1000 * 10) // every ten seconds
+        this.fetchGameInterval = setInterval(function(){ self.fetchGameData() }, 1000 * 10) // every ten seconds
+    },
+
+    destroyed: function() {
+        clearInterval(this.fetchGameInterval)
     },
 
     methods: {
@@ -74,7 +77,7 @@ export default {
             }
             this.fetchGameDataLock = true
             self = this
-            api.getGame(this, this.id,  function(response) {
+            api.getGame(this, this.$route.params.id,  function(response) {
                 self.game = response.body
                 self.fetchGameDataLock = false
                 // initial loading

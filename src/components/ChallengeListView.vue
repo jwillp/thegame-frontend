@@ -8,7 +8,7 @@
             <el-card class="box-card" v-for="challenge in challenges" :key="challenge.id">
               <div slot="header" class="clearfix">
                 <span style="line-height: 36px;">
-                    <router-link :to="{name:'register'}">{{ challenge.title }}</router-link>
+                    <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">{{ challenge.title }}</router-link>
                 </span>
                 <!-- <el-button style="float: right;" type="primary" @click="viewChallenge(challenge)">Open</el-button> -->
                 <p>{{ challenge.description }}</p>

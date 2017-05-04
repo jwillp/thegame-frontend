@@ -17,11 +17,16 @@ const GET_GAME_URL = API_URL + '/games/:id'
 
 const GET_CHALLENGES_URL = API_URL + '/games/:id/challenges'
 const CREATE_CHALLENGE_URL = API_URL + '/games/:id/challenges/new'
+const GET_CHALLENGE_URL = API_URL + '/challenges/:id'
+const COMPLETE_CHALLENGE_URL = API_URL + '/challenges/:id/complete'
+const CANCEL_CHALLENGE_URL = API_URL + '/challenges/:id/cancel'
+
 
 export default {
 
   // User object will let us check authentication status
   user: {
+    username: '',
     authenticated: false
   },
 
@@ -37,6 +42,7 @@ export default {
       function(response) {
         localStorage.setItem('token', response.body.token)
         self.user.authenticated = true
+        self.user.username = creds.username
 
         successCallback(response)
 
@@ -126,5 +132,36 @@ export default {
     }
     context.$http.post(CREATE_CHALLENGE_URL.replace(':id', gameId), data, options)
                .then(successCallback, errorCallback)
+  },
+
+  getChallenge(context, challengeId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_CHALLENGE_URL.replace(':id',  challengeId), options)
+                 .then(successCallback, errorCallback)
+  },
+
+  // Completes a challenge for currently authenticated user
+  completeChallenge(context, challengeId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+
+    context.$http.post(COMPLETE_CHALLENGE_URL.replace(':id',  challengeId), {}, options)
+                 .then(successCallback, errorCallback)
+  },
+
+  // Cancels a challenge score for an authenticated user
+  cancelChallenge(context, challengeId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+
+    context.$http.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {}, options)
+                 .then(successCallback, errorCallback)
   }
 }
