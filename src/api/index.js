@@ -4,13 +4,19 @@
 import router from '../router'
 
 // URL and endpoint constants
-const API_URL = 'http://localhost/thegame/web/app_dev.php/api'
+const HOST = 'http://localhost/thegame/web/app_dev.php'
+
+const API_URL = HOST + '/api'
+
 const LOGIN_URL = API_URL + '/users/login'
 const REGISTER_URL = API_URL + '/users/register'
 
 const CREATE_GAME_URL = API_URL + '/games/new'
 const GET_GAMES_URL = API_URL + '/games'
-const GET_GAME_URL = API_URL + '/games/'
+const GET_GAME_URL = API_URL + '/games/:id'
+
+const GET_CHALLENGES_URL = API_URL + '/games/:id/challenges'
+const CREATE_CHALLENGE_URL = API_URL + '/games/:id/challenges/new'
 
 export default {
 
@@ -100,7 +106,25 @@ export default {
     var options = {
       headers: self.getAuthHeader()
     }
-    context.$http.get(GET_GAME_URL + gameId, options)
+    context.$http.get(GET_GAME_URL.replace(':id', gameId), options)
                  .then(successCallback, errorCallback)
+  },
+
+  getChallenges(context, gameId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_CHALLENGES_URL.replace(':id', gameId), options)
+                 .then(successCallback, errorCallback)
+  },
+
+  createChallenge(context, gameId, data, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.post(CREATE_CHALLENGE_URL.replace(':id', gameId), data, options)
+               .then(successCallback, errorCallback)
   }
 }

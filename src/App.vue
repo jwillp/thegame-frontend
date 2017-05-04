@@ -9,14 +9,14 @@
             </router-link>
           </div>
         </el-menu-item>
-        <el-menu-item><router-link :to="{name:'home'}">Home</router-link></el-menu-item>
+        <el-menu-item index="1"><router-link :to="{name:'home'}">Home</router-link></el-menu-item>
 
         <!-- Unauthenticated -->
-        <el-menu-item v-if="!user.authenticated"><router-link :to="{name:'register'}" >Register</router-link></el-menu-item>
-        <el-menu-item v-if="!user.authenticated"><router-link :to="{name:'login'}">Login</router-link></el-menu-item>
+        <el-menu-item v-if="!user.authenticated" index="2"><router-link :to="{name:'register'}" >Register</router-link></el-menu-item>
+        <el-menu-item v-if="!user.authenticated" index="3"><router-link :to="{name:'login'}">Login</router-link></el-menu-item>
         <!-- Authenticated -->
-        <el-menu-item v-if="user.authenticated"><router-link :to="{name:'games'}">Games</router-link></el-menu-item>
-        <el-menu-item v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></el-menu-item>
+        <el-menu-item v-if="user.authenticated" index="4"><router-link :to="{name:'games'}">Games</router-link></el-menu-item>
+        <el-menu-item v-if="user.authenticated" index="5"><router-link :to="{name:'logout'}">Logout</router-link></el-menu-item>
       </el-menu>
       <div class="line"></div>
     </div> <!-- /header -->
@@ -43,9 +43,18 @@ export default {
   name: 'app',
   data() {
     return {
-      user: api.user
+      user: api.user,
+
+
+      activeIndex: "home"
     }
   },
+
+  methods: {
+    handleSelect: function() {
+
+    }
+  }
 }
 </script>
 

@@ -17,7 +17,12 @@
             </el-tab-pane>
 
             <el-tab-pane label="Challenges" name="challenges">
-                Challenges
+                <div v-if="game">
+                    <ChallengeListView :gameId='game.id'></ChallengeListView>
+                </div>
+                <div v-else>
+                    Loading ...
+                </div>
             </el-tab-pane>
 
             <el-tab-pane label="Leaderboard" name="leaderboard">
@@ -36,14 +41,18 @@
 import api from '../api'
 import router from '../router'
 import moment from 'moment'
+
+import ChallengeListView from './ChallengeListView'
+
 export default {
     data: () => {
         return {
             activeName: 'newsfeed',
-            id: -1,
+
             game: undefined,
-            fetchLock: false,
-            gameLoading: true,
+            fetchGameDataLock: false,
+            gameDataLoading: true,
+
 
             dialogNewGameVisible: false
         }
@@ -60,23 +69,23 @@ export default {
     methods: {
         fetchGameData: function(force = false) {
             // lock requests so we dont spam
-            if(this.fetchLock && !force) {
+            if(this.fetchGameDataLock && !force) {
                 return
             }
-            this.fetchLock = true
+            this.fetchGameDataLock = true
             self = this
             api.getGame(this, this.id,  function(response) {
                 self.game = response.body
-                self.fetchLock = false
+                self.fetchGameDataLock = false
                 // initial loading
-                if(self.gameLoading) {
-                    self.gameLoading = false
+                if(self.gameDataLoading) {
+                    self.gameDataLoading = false
                 }
             }, function(responese){
                 console.log(responese)
                 // initial loading
-                if(self.gameLoading) {
-                    self.gameLoading = false
+                if(self.gameDataLoading) {
+                    self.gameDataLoading = false
                 }
             })
         },
@@ -92,6 +101,10 @@ export default {
         handleClick(tab, event) {
           console.log(tab, event);
         }
+    },
+
+    components: {
+        ChallengeListView
     }
 }
 </script>
