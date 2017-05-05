@@ -1,5 +1,5 @@
 <template>
-    <div id="logout-view">
+    <div id="logout-view" class="well">
         <h1>Successfully logged out</h1>
     </div>
 </template>

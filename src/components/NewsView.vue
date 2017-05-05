@@ -7,14 +7,52 @@
                       {{ news.game.title }}
                     </router-link>
                 </p>
-                <p>{{ formatNews(news) }}</p>
+
+                <p v-if="news.iid == 'USER_COMPLETED_CHALLENGE_EVENT'">
+                    <router-link :to="{name:'user_profile', params:{ id: news.agent.object_id }}">
+                      {{ news.agent.object.username }} 
+                    </router-link>
+                      completed a score for challenge
+                    <router-link :to="{name:'challenge_view', params:{ id: news.target.object_id }}">
+                      {{ news.target.object.title }}
+                    </router-link>
+                </p>
+
+                <p v-else-if="news.iid == 'USER_CANCELED_CHALLENGE_EVENT'">
+                    <router-link :to="{name:'user_profile', params:{ id: news.agent.object_id }}">
+                      {{ news.agent.object.username }} 
+                    </router-link>
+                      canceled a score for challenge
+                    <router-link :to="{name:'challenge_view', params:{ id: news.target.object_id }}">
+                      {{ news.target.object.title }}
+                    </router-link>
+                </p>
+
+                <p v-else>
+                    {{ formatNews(news) }}
+                </p>
                 <p>{{ formatDate(news.date, true) }}</p>
             </div> <!-- info -->
-            <div class="col-xs-2 news-icon news-blue">
+
+            <!-- ICONS -->
+            <div v-if="news.iid == 'USER_COMPLETED_CHALLENGE_EVENT'"
+                 class="col-xs-2 news-icon news-green">
                 <div class="center-xy">
                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                    {{ news.target.object.nb_points }}
                 </div>
-            </div> <!-- icon -->
+            </div> 
+
+            <div v-else-if="news.iid == 'USER_CANCELED_CHALLENGE_EVENT'"
+                 class="col-xs-2 news-icon news-red">
+                <div class="center-xy">
+                    <i class="glyphicon glyphicon-minus" aria-hidden="true"></i>
+                    {{ news.target.object.nb_points }}
+                </div>
+            </div> 
+
+
+
         </div> <!-- /.row -->
     </div> <!-- / .news -->
 </template>

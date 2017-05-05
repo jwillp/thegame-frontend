@@ -54,6 +54,11 @@ export default new Router({
       path: '/newsfeed',
       name: 'newsfeed',
       component: NewsfeedView
+    },
+    {
+      path: '/user/:id',
+      name: 'user_profile',
+      component: HomeView
     }
   ]
 })
