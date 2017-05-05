@@ -1,0 +1,14 @@
+/* REDEFINE BOOTSTRAP VARIABLES */
+
+$brand-primary: #d80032;
+
+
+
+
+$icon-font-path: "/node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+
+
+
+
+/* IMPORT BOOTSTRAP VARIABLES */
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";

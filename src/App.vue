@@ -58,7 +58,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import "src/assets/scss/style.scss";
+
 body {
   margin: 0px;
 }

@@ -4,9 +4,18 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import locale from 'element-ui/lib/locale/lang/en'
+
+
+// import jquery + bootstrap js
+import jQuery from 'jquery'
+window.jQuery = window.$ = jQuery
+require('bootstrap-sass')
+
+
 
 Vue.use(VueResource)
 Vue.use(ElementUI, { locale })
