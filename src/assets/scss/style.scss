@@ -3,3 +3,17 @@
 @import "./bootstrap/bootstrap-custom";
 
 
+
+/* ELEMENT UI OVERRIDE */
+.el-tabs__item:not(.is-active) {
+    color: $text-color !important;
+}
+
+.form-error {
+    @extend .alert;
+    @extend .alert-danger;
+}
+
+.table {
+    border: 1px solid $table-border-color;
+}

@@ -18,13 +18,12 @@
 
             <!-- Authenticated -->
             <li v-if="user.authenticated"><router-link :to="{name:'games'}">Games</router-link></li>
-            <li v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></li>
-
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li v-if="user.authenticated"><a href="#">
+            <li v-if="user.authenticated">
+              <a href="#">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                {{ user }}
+                {{ user.username }}
               </a>
             </li>
             <li v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></li>

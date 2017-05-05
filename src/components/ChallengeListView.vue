@@ -4,20 +4,27 @@
             <el-button type="primary" @click="dialogNewChallengeVisible = true">New Challenge</el-button>
         </div> <!-- /page-controls -->
 
-        <div class="challenges" v-loading="challengesLoading">
-            <el-card class="box-card" v-for="challenge in challenges" :key="challenge.id">
-              <div slot="header" class="clearfix">
-                <span style="line-height: 36px;">
-                    <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">{{ challenge.title }}</router-link>
-                </span>
-                <!-- <el-button style="float: right;" type="primary" @click="viewChallenge(challenge)">Open</el-button> -->
-                <p>{{ challenge.description }}</p>
-                <p>{{ challenge.nb_points }}</p>
-              </div>
-              <div class="text item">
-
-              </div>
-            </el-card>
+        <div class="challenges" v-loading="challengesLoading" element-loading-text="Loading...">
+          <div class="panel panel-default"  v-for="challenge in challenges" :key="challenge.id">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-10">
+                  <h2 class="challenge-title">
+                    <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">
+                      {{ challenge.title }}
+                    </router-link>
+                  </h2>
+                  <p>{{ challenge.description }}</p>
+                </div>
+                <div class="col-xs-2 text-right">
+                  <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">
+                    <h3>{{ challenge.nb_points }} pts</h3>
+                  </router-link>
+                  <!-- <el-button style="float: right;" type="primary" @click="viewGame(game)">Open</el-button> -->
+                </div>
+              </div> <!-- /.row -->
+            </div> <!-- /.panel-body -->
+          </div> <!-- /.panel -->
         </div>
 
         <ChallengeFormView v-model="dialogNewChallengeVisible" :gameId="gameId"></ChallengeFormView>

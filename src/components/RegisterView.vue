@@ -1,6 +1,6 @@
 <template>
 
-    <div id="register-success-view" v-if="registration_success">
+    <div id="register-success-view" v-if="registration_success" class="jumbotron">
         <h1>Registration sucess!</h1>
         <p>You may now <router-link :to="{name:'login'}">login</router-link></p>
     </div>
@@ -8,6 +8,9 @@
     <div id="register-view" v-else>
         <h1>Register</h1>
         <p>Create an account to be part of the game</p>
+        <div class="form-error-block" v-if="errors.global">
+            <p class="form-error" v-for="error in errors.global">{{ error }}</p>
+        </div>
         <form v-on:submit.prevent="registerUser">
             <div class="form-group">
                 <div class="form-error-block" v-if="errors.username">
@@ -62,7 +65,7 @@
             </div>
 
             <div class="form-group">
-                <el-button type="primary" @click="registerUser">Register</el-button>
+                <el-button type="primary" @click="registerUser" :loading="registrationInProgress">Register</el-button>
             </div>
         </form>
     </div>
@@ -82,13 +85,15 @@ export default {
             errors: {
 
             },
-            registration_success: false
+            registration_success: false,
+
+            registrationInProgress: false
         }
     },
 
     methods: {
         registerUser: function() {
-
+            this.registrationInProgress = true
             // Test if passwords are the same (since server does not test for this)
             if(this.credentials.plain_password != this.credentials.plain_password_confirm) {
 
@@ -103,10 +108,19 @@ export default {
                 // SUCCES CALLBACK
                 function(response) {
                     self.registration_success = true
+                    self.registrationInProgress = false
                 },
                 // ERROR CALLBACK
                 function(response) {
-                    self.errors = response.body.errors
+                    console.log(response)
+                    self.registrationInProgress = false
+                    self.errors = response.body.errors || {}
+
+                    if(response.status == 500) {
+                        self.errors = {
+                            global: ['Server Error, please try again later']
+                        }
+                    }
                 }
             )
         }

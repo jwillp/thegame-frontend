@@ -1,36 +1,53 @@
 <template>
-    <div id="challenge-view" v-loading="challeneDataLoading">
+    <div id="challenge-view" v-loading="challengeDataLoading">
         <div id="game-view-info">
             <div v-if="challenge">
-                <h1>{{ challenge.title }}</h1>
-                <p>{{ challenge.description }}</p>
-                <h3>{{ challenge.nb_points }}</h3>
-                <el-button-group>
-                  <el-button type="success" icon="check" @click="completeChallenge"></el-button>
-                  <el-button type="info" :plain="true">{{ getUserNbTimes() }}</el-button>
-                  <el-button type="danger" icon="close" @click="cancelChallenge"></el-button>
-                </el-button-group>
-                <div class="challenge-score-list">
-                    <table>
-                        <thead>
-                            <th>Rank</th>
-                            <th>User</th>
-                            <th>Number of times</th>
-                            <th>Number of points</th>
-                        </thead>
-                        <tbody>
-                            <tr v-for="score in challenge.scores" :key="score.id">
-                                <td>{{ score.id }}</td>
-                                <td>{{ score.user.username }}</td>
-                                <td>{{ score.nb_times }}</td>
-                                <td>{{ score.nb_times * challenge.nb_points }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>  <!-- .challenge-score-list -->
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <h1>{{ challenge.title }}</h1>
+                    <p>{{ challenge.description }}</p>
+                    <h3>{{ challenge.nb_points }} pts</h3>
+                  </div>
+                  <div class="panel-footer">
+                    <div class="btn-group">
+                      <a class="btn btn-success" @click="completeChallenge">
+                        <i class="glyphicon glyphicon-ok"></i>
+                      </a>
+                      <a class="btn btn-default">
+                        {{ getUserNbTimes() }}
+                      </a>
+                      <a class="btn btn-danger" @click="cancelChallenge">
+                        <i class="glyphicon glyphicon-remove"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="well">
+                  <div class="challenge-score-list">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>        
+                                <th>Rank</th>
+                                <th>User</th>
+                                <th>Number of times</th>
+                                <th>Number of points</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="score in challenge.scores" :key="score.id">
+                                    <td>{{ score.id }}</td>
+                                    <td>{{ score.user.username }}</td>
+                                    <td>{{ score.nb_times }}</td>
+                                    <td>{{ score.nb_times * challenge.nb_points }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                  </div>  <!-- .challenge-score-list -->
+                </div><!-- /.panel -->
             </div> <!-- .challenge -->
             <div v-else>
-                Loading ...
+                
             </div>
         </div>
     </div>
@@ -46,7 +63,7 @@ export default {
         return {
             challenge: undefined,
             fetchChallengeDataLock: false,
-            challeneDataLoading: true,
+            challengeDataLoading: true,
 
             fetchDataInterval: undefined,
 
@@ -76,8 +93,8 @@ export default {
                 self.challenge = response.body
                 self.fetchChallengeDataLock = false
                 // initial loading
-                if(self.challeneDataLoading) {
-                    self.challeneDataLoading = false
+                if(self.challengeDataLoading) {
+                    self.challengeDataLoading = false
                 }
             }, function(responese){
                 console.log(responese)
@@ -85,8 +102,8 @@ export default {
                 self.fetchChallengeDataLock = false
 
                 // initial loading
-                if(self.challeneDataLoading) {
-                    self.challeneDataLoading = false
+                if(self.challengeDataLoading) {
+                    self.challengeDataLoading = false
                 }
             })
         },

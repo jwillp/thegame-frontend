@@ -1,19 +1,28 @@
 <template>
     <div id="gamelist-view">
         <div class="page-controls">
-            <el-button type="primary" @click="dialogNewGameVisible = true">New Game</el-button>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <button class="btn btn-primary" @click="dialogNewGameVisible = true">New Game</button>
+              </div>
+            </div>
         </div> <!-- /page-controls -->
-        <hr>
-        <div class="games" v-loading="gameLoading">
-            <el-card class="box-card" v-for="game in games" :key="game.id">
-              <div slot="header" class="clearfix">
-                <span style="line-height: 36px;">{{ game.title }}</span>
-                <el-button style="float: right;" type="primary" @click="viewGame(game)">Open</el-button>
-              </div>
-              <div class="text item">
-                from {{ format(game.start_date) }} to {{ format(game.end_date, true) }}
-              </div>
-            </el-card>
+
+        <div class="games" v-loading="gameLoading"  element-loading-text="Loading...">
+          
+          <div class="panel panel-default"  v-for="game in games" :key="game.id">
+            <div class="panel-body">
+                <div class="col-xs-10">
+                    <h2 class="challenge-title">
+                      <router-link :to="{name:'games_view', params:{ id: game.id }}">
+                        {{ game.title }}
+                      </router-link>
+                    </h2>
+                    <p>{{ game.description }}</p>
+                    <p class="text-primary">From <b>{{ format(game.start_date) }}</b> to <b>{{ format(game.end_date, true) }}</b></p>
+                </div>
+            </div> <!-- /.panel-body -->
+          </div> <!-- /.panel -->
         </div>
 
         <GameFormDialogView v-model="dialogNewGameVisible"></GameFormDialogView>
@@ -34,6 +43,7 @@ export default {
 
             fetchLock: false,
             gameLoading: true,
+            fetchInterval: undefined,
 
             dialogNewGameVisible: false
         }
@@ -42,7 +52,11 @@ export default {
     created: function() {
         var self = this
         this.fetchData(true)
-        setInterval(function(){ self.fetchData() }, 1000 * 10)
+        this.fetchInterval = setInterval(function(){ self.fetchData() }, 1000 * 10)
+    },
+
+    destroyed: function() {
+      clearInterval(this.fetchInterval)
     },
 
     methods: {

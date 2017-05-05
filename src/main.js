@@ -6,7 +6,8 @@ import router from './router'
 import VueResource from 'vue-resource'
 
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import './assets/scss/element-theme/index.css'
+//import 'element-ui/lib/theme-default/index.css'
 import locale from 'element-ui/lib/locale/lang/en'
 
 
