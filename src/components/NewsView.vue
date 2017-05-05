@@ -1,7 +1,7 @@
 <template>
     <div class="news container-fluid">
         <div class="row">
-            <div class="col-md-10 news-message">
+            <div class="col-xs-10 news-message">
                 <p v-if="news.game">
                     <router-link :to="{name:'games_view', params:{ id: news.game.id }}">
                       {{ news.game.title }}
@@ -10,9 +10,9 @@
                 <p>{{ formatNews(news) }}</p>
                 <p>{{ formatDate(news.date, true) }}</p>
             </div> <!-- info -->
-            <div class="col-md-2 news-icon news-blue">
+            <div class="col-xs-2 news-icon news-blue">
                 <div class="center-xy">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                 </div>
             </div> <!-- icon -->
         </div> <!-- /.row -->
