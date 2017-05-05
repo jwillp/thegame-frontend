@@ -59,6 +59,12 @@ export default {
         }
     },
 
+    created: function() {
+        if(api.user.authenticated) {
+            router.replace('/')
+        }
+    },
+
     methods: {
         login: function() {
             this.loginInProgress = true
