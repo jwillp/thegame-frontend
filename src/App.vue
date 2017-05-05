@@ -17,6 +17,7 @@
             <li><router-link :to="{name:'home'}">Home</router-link></li>
 
             <!-- Authenticated -->
+            <li v-if="user.authenticated"><router-link :to="{name:'newsfeed'}">Newsfeed</router-link></li>
             <li v-if="user.authenticated"><router-link :to="{name:'games'}">Games</router-link></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

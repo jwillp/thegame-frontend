@@ -20,6 +20,7 @@ const CREATE_CHALLENGE_URL = API_URL + '/games/:id/challenges/new'
 const GET_CHALLENGE_URL = API_URL + '/challenges/:id'
 const COMPLETE_CHALLENGE_URL = API_URL + '/challenges/:id/complete'
 const CANCEL_CHALLENGE_URL = API_URL + '/challenges/:id/cancel'
+const GET_NEWS_URL = API_URL + '/events'
 
 
 export default {
@@ -86,7 +87,6 @@ export default {
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
   },
-
 
 
   createGame(context, data, successCallback, errorCallback) {
@@ -162,6 +162,15 @@ export default {
     }
 
     context.$http.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {}, options)
+                 .then(successCallback, errorCallback)
+  },
+
+  getNews(context, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_NEWS_URL, options)
                  .then(successCallback, errorCallback)
   }
 }

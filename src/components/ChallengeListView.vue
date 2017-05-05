@@ -106,18 +106,4 @@ export default {
     .page-controls {
         margin-bottom: 30px;
     }
-
-    .box-card {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-    .clearfix:after {
-        clear: both
-    }
 </style>

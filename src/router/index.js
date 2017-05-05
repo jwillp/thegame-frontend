@@ -8,6 +8,7 @@ import LogoutView from '@/components/LogoutView'
 import GameListView from '@/components/GameListView'
 import GameView from '@/components/GameView'
 import ChallengeView from '@/components/ChallengeView'
+import NewsfeedView from '@/components/NewsfeedView'
 
 Vue.use(Router)
 
@@ -49,6 +50,11 @@ export default new Router({
       name: 'challenge_view',
       component: ChallengeView
     },
+    {
+      path: '/newsfeed',
+      name: 'newsfeed',
+      component: NewsfeedView
+    }
   ]
 })
 

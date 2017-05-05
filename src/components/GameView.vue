@@ -13,12 +13,19 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
 
             <el-tab-pane label="Newsfeed" name="newsfeed">
-                Newsfeed
+                <div class="well">
+                    <h1 class="text-center"><img src="./../assets/images/newsfeed.png" width="400px" alt="Newsfeed"></h1>
+                    <h2 class="text-center">Newsfeed</h2>
+                </div>
             </el-tab-pane>
 
             <el-tab-pane label="Challenges" name="challenges">
                 <div v-if="game">
-                    <ChallengeListView :gameId='game.id'></ChallengeListView>
+                    <div class="well">
+                        <h1 class="text-center"><img src="./../assets/images/challenge.png" width="400px" alt="Newsfeed"></h1>
+                        <h2 class="text-center">Challenges</h2>
+                        <ChallengeListView :gameId='game.id'></ChallengeListView>
+                    </div>
                 </div>
                 <div v-else>
                     Loading ...
