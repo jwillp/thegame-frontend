@@ -1,8 +1,9 @@
 <template>
     <div id="home-view">
-        <h1>Home</h1>
-        This is the home page
+        <h1>The Game</h1>
+        <p>Welcome to the game</p>
 
-        <a class="btn btn-primary" href="#">Button Test</a>
+        <router-link :to="{name:'login'}" class="btn btn-primary">Login</router-link>
+        <router-link :to="{name:'register'}" class="btn btn-primary">Register</router-link>
     </div>
 </template>
