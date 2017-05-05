@@ -96,8 +96,8 @@ export default {
                 if(self.challengeDataLoading) {
                     self.challengeDataLoading = false
                 }
-            }, function(responese){
-                console.log(responese)
+            }, function(response){
+                console.log(response)
 
                 self.fetchChallengeDataLock = false
 
@@ -109,6 +109,10 @@ export default {
         },
 
         completeChallenge: function() {
+
+            // Visually change it now (live feedback)
+            this.getUserScore().nb_times++;
+
             api.completeChallenge(this, this.challenge.id,
             // success
             function(response) {
@@ -116,12 +120,18 @@ export default {
             },
 
             // error
-            function(responese){
-                console.log(responese)
+            function(response){
+                console.log(response)
             })
         },
 
         cancelChallenge: function() {
+
+            // Visually change it now (live feedback)
+            var score = this.getUserScore();
+            score.nb_times--
+            if(score.nb_times < 0) score.nb_times = 0
+
             api.cancelChallenge(this, this.challenge.id,
             // success
             function(response) {
@@ -129,13 +139,12 @@ export default {
             },
 
             // error
-            function(responese){
-                console.log(responese)
+            function(response){
+                console.log(response)
             })
         },
 
         getUserScore: function() {
-            console.log(api.user.username)
             for (var i = this.challenge.scores.length - 1; i >= 0; i--) {
                 var score = this.challenge.scores[i]
                 if (score.user.username == api.user.username) {
