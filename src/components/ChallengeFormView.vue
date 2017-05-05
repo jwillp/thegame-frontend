@@ -39,7 +39,7 @@
       </form>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="createChallenge">Create</el-button>
+      <el-button type="primary" @click="createChallenge" :loading="challengeInCreation">Create</el-button>
       <el-button @click="dialogVisible = false">Cancel</el-button>
     </span>
   </el-dialog>
@@ -63,6 +63,8 @@ export default {
                 nb_points: 10
             },
 
+            challengeInCreation: false,
+
             errors: {},
         }
     },
@@ -85,16 +87,26 @@ export default {
 
     methods: {
         createChallenge: function() {
+          this.challengeInCreation = true
           var self = this
           var response = api.createChallenge(this, this.gameId, this.fields,
               // SUCCES CALLBACK
               function(response) {
                   console.log(response)
+                  self.fields = {
+                      title: '',
+                      description: '',
+                      nb_points: 10
+                  },
+                  self.dialogVisible = false
+                  self.challengeInCreation = false
+
               },
               // ERROR CALLBACK
               function(response) {
                   console.log(response)
                   self.errors = response.body.errors
+                  self.challengeInCreation = false
               }
           )
         }

@@ -1,36 +1,50 @@
 <template>
   <div id="app">
-    <div id="header">
-      <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="1">
-          <div id="header-logo">
-            <router-link :to="{name:'home'}">
-              <img src="./assets/logo.png" width="50px">
-            </router-link>
-          </div>
-        </el-menu-item>
-        <el-menu-item index="1"><router-link :to="{name:'home'}">Home</router-link></el-menu-item>
 
-        <!-- Unauthenticated -->
-        <el-menu-item v-if="!user.authenticated" index="2"><router-link :to="{name:'register'}" >Register</router-link></el-menu-item>
-        <el-menu-item v-if="!user.authenticated" index="3"><router-link :to="{name:'login'}">Login</router-link></el-menu-item>
-        <!-- Authenticated -->
-        <el-menu-item v-if="user.authenticated" index="4"><router-link :to="{name:'games'}">Games</router-link></el-menu-item>
-        <el-menu-item v-if="user.authenticated" index="5"><router-link :to="{name:'logout'}">Logout</router-link></el-menu-item>
-      </el-menu>
-      <div class="line"></div>
-    </div> <!-- /header -->
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <router-link :to="{name:'home'}" class="navbar-brand">The Game</router-link>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><router-link :to="{name:'home'}">Home</router-link></li>
 
-    <div id="sidebar">
+            <!-- Authenticated -->
+            <li v-if="user.authenticated"><router-link :to="{name:'games'}">Games</router-link></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li v-if="user.authenticated">
+              <a href="#">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                {{ user.username }}
+              </a>
+            </li>
+            <li v-if="user.authenticated"><router-link :to="{name:'logout'}">Logout</router-link></li>
 
-    </div>
-    <router-view
-      class="view"
-      keep-alive
-      transition
-      transition-mode="out-in">
-    </router-view>
-  </div>
+            <li v-if="!user.authenticated"><router-link :to="{name:'login'}">Login</router-link></li>
+            <li v-if="!user.authenticated"><router-link :to="{name:'register'}" >Register</router-link></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div id="main-container" class="container">
+      <router-view
+        class="view"
+        keep-alive
+        transition
+        transition-mode="out-in">
+      </router-view>
+    </div> <!-- page wrapper -->
+    
+  </div><!-- #app -->
 </template>
 
 <script>
@@ -58,15 +72,12 @@ export default {
 }
 </script>
 
-<style>
-body {
-  margin: 0px;
-}
+<style lang="scss">
+@import "src/assets/scss/style.scss";
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin-top: 0px;
 }
 </style>

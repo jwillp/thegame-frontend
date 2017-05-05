@@ -1,6 +1,23 @@
 <template>
-    <div id="home-view">
-        <h1>Home</h1>
-        This is the home page
+    <div id="home-view" class="jumbotron">
+        <h1>The Game</h1>
+        <p>Welcome to the game</p>
+
+        <router-link :to="{name:'login'}" class="btn btn-primary">Login</router-link>
+        <router-link :to="{name:'register'}" class="btn btn-primary">Register</router-link>
     </div>
 </template>
+
+
+<script>
+import router from '../router'
+import api from '../api'
+
+export default {
+    created: function(){
+        if(api.user.authenticated) {
+            router.replace('/games')
+        }
+    }
+}
+</script>
