@@ -10,14 +10,14 @@
                   </div>
                   <div class="panel-footer">
                     <div class="btn-group">
-                      <a class="btn btn-success" @click="completeChallenge">
-                        <i class="glyphicon glyphicon-ok"></i>
+                      <a class="btn btn-danger" @click="cancelChallenge">
+                        <i class="glyphicon glyphicon-remove"></i>
                       </a>
                       <a class="btn btn-default">
                         {{ getUserNbTimes() }}
                       </a>
-                      <a class="btn btn-danger" @click="cancelChallenge">
-                        <i class="glyphicon glyphicon-remove"></i>
+                      <a class="btn btn-success" @click="completeChallenge">
+                        <i class="glyphicon glyphicon-ok"></i>
                       </a>
                     </div>
                   </div>
@@ -111,7 +111,10 @@ export default {
         completeChallenge: function() {
 
             // Visually change it now (live feedback)
-            this.getUserScore().nb_times++;
+            var score = this.getUserScore()
+            if(score) {
+                score.nb_times++;
+            }
 
             api.completeChallenge(this, this.challenge.id,
             // success
@@ -129,8 +132,10 @@ export default {
 
             // Visually change it now (live feedback)
             var score = this.getUserScore();
-            score.nb_times--
-            if(score.nb_times < 0) score.nb_times = 0
+            if(score) {
+                score.nb_times--
+                if(score.nb_times < 0) score.nb_times = 0
+            }
 
             api.cancelChallenge(this, this.challenge.id,
             // success
