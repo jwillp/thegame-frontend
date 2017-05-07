@@ -75,13 +75,7 @@ export default {
 
   checkAuth() {
     var jwt = localStorage.getItem('token')
-    if(jwt) {
-      this.user.authenticated = true
-    }
-    else {
-      this.user.authenticated = false
-    }
-
+    this.user.authenticated= jwt != undefined
     this.user.username = localStorage.getItem('username')
   },
 

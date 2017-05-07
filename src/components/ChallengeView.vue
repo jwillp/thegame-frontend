@@ -174,10 +174,11 @@ export default {
 
         rankScores: function() {
             var scores = this.challenge.scores
-            this.sortBy('nb_times', true)
+
+            // Score are supposed to be sorted by the server
 
             // Rank scores from 1 to N
-            for (var i = scores.length - 1; i >= 0; i--) {
+            for (var i = 0; i < scores.length ; i++) {
               scores[i].rank = (i + 1);
             };
 
@@ -195,17 +196,16 @@ export default {
          * Sort by city, case-insensitive, A-Z
          * homes.sort(sort_by('city', false, function(a){return a.toUpperCase()}));
          */
-        sortBy: function(field, reverse, primer){
-
-           var key = primer ?
+        sortBy: function(field, reverse, primer) {
+            var key = primer ?
                function(x) {return primer(x[field])} :
                function(x) {return x[field]};
 
-           reverse = !reverse ? 1 : -1;
+            reverse = !reverse ? 1 : -1;
 
-           return function (a, b) {
+            return function (a, b) {
                return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-             }
+            }
         }
     },
 }

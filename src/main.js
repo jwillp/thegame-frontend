@@ -16,13 +16,30 @@ import jQuery from 'jquery'
 window.jQuery = window.$ = jQuery
 require('bootstrap-sass')
 
-
-
 Vue.use(VueResource)
 Vue.use(ElementUI, { locale })
 
 
 Vue.config.productionTip = false
+
+
+import api from './api'
+// Intercept ajax requests to see if token is invalid
+Vue.http.interceptors.push(function(request, next) {
+  next(function(response) {
+    if(response.status == 401){
+        if(response.body.errors.length != 0){
+            if(response.body.errors[0] == 'Invalid Token'){
+                // We need to relogin
+                api.logout()
+                router.replace('/login')
+            }
+        }
+    }
+  })
+})
+
+
 
 /* eslint-disable no-new */
 new Vue({
