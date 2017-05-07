@@ -20,6 +20,13 @@
                     </h2>
                     <p>{{ game.description }}</p>
                     <p class="text-primary">From <b>{{ format(game.start_date) }}</b> to <b>{{ format(game.end_date, true) }}</b></p>
+
+                    <p v-if="game.visibility == 'VISIBILITY_PRIVATE'">
+                        <i class="glyphicon glyphicon-lock"></i> Private
+                    </p>
+                    <p v-if="game.visibility == 'VISIBILITY_PUBLIC'">
+                        <i class="glyphicon glyphicon-globe"></i> Public
+                    </p>
                 </div>
             </div> <!-- /.panel-body -->
           </div> <!-- /.panel -->

@@ -2,8 +2,16 @@
     <div id="game-view" v-loading="gameDataLoading">
         <div id="game-view-info">
             <div v-if="game">
-                <h1>{{ game.title }}</h1>
+                <h1>
+                    {{ game.title }}
+                </h1>
                 <p>from {{ format(game.start_date) }} to {{ format(game.end_date, true) }}</p>
+                <p v-if="game.visibility == 'VISIBILITY_PRIVATE'">
+                    <i class="glyphicon glyphicon-lock"></i> Private
+                </p>
+                <p v-if="game.visibility == 'VISIBILITY_PUBLIC'">
+                    <i class="glyphicon glyphicon-globe"></i> Public
+                </p>
             </div>
         </div>
         <el-tabs v-model="activeName" @tab-click="handleClick" v-if="game">
