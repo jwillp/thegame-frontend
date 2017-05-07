@@ -71,7 +71,7 @@ export default {
                 return
             }
             this.fetchLock = true
-            self = this
+            var self = this
             api.getChallenges(this, this.$route.params.id, function(response) {
                 self.challenges = response.body.items
                 self.count = response.body.count

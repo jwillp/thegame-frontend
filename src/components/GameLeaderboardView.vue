@@ -51,7 +51,7 @@ export default {
     created: function() {
         var self = this
         this.fetchLeaderboard(true)
-        this.fetchDataInterval = setInterval(function(){ self.fetchLeaderboard() }, 1000 * 10) // every ten seconds
+        this.fetchDataInterval = setInterval(function(){ self.fetchLeaderboard() }, 1000 * 8) // every ten seconds
     },
 
     destroyed: function() {
@@ -65,7 +65,7 @@ export default {
                 return
             }
             this.fetchLeaderboardLock = true
-            self = this
+            var self = this
             api.getLeaderboard(this, this.gameId,  function(response) {
 
                 self.leaderboard = response.body
