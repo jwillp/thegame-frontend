@@ -35,8 +35,13 @@
                               </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="score in challenge.scores" :key="score.id">
-                                    <td>{{ score.id }}</td>
+                                <tr v-for="score in rankScores()" 
+                                    :key="score.id" 
+                                    :class="'rank-' + score.rank">
+                                    <td>
+                                        {{ score.rank }}
+                                        <i v-if="score.rank == 1" class="glyphicon glyphicon-star"></i>
+                                    </td>
                                     <td>{{ score.user.username }}</td>
                                     <td>{{ score.nb_times }}</td>
                                     <td>{{ score.nb_times * challenge.nb_points }}</td>
@@ -162,6 +167,42 @@ export default {
         getUserNbTimes: function() {
             var score = this.getUserScore()
             return score ? score.nb_times : 0
+        },
+
+        rankScores: function() {
+            var scores = this.challenge.scores
+            this.sortBy('nb_times', true)
+
+            // Rank scores from 1 to N
+            for (var i = scores.length - 1; i >= 0; i--) {
+              scores[i].rank = (i + 1);
+            };
+
+            return scores;
+        },
+
+        /**
+         * Used to easily sort objects by a certain field
+         * source: http://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
+         * usage:
+         *
+         * Sort by price high to low
+         * homes.sort(sort_by('price', true, parseInt));
+         *
+         * Sort by city, case-insensitive, A-Z
+         * homes.sort(sort_by('city', false, function(a){return a.toUpperCase()}));
+         */
+        sortBy: function(field, reverse, primer){
+
+           var key = primer ?
+               function(x) {return primer(x[field])} :
+               function(x) {return x[field]};
+
+           reverse = !reverse ? 1 : -1;
+
+           return function (a, b) {
+               return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+             }
         }
     },
 }

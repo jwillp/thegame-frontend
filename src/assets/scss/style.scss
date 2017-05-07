@@ -18,6 +18,18 @@
     border: 1px solid $table-border-color;
 }
 
+// Scores
+.rank-1 {
+    background-color: $brand-success !important;
+    color: #FFF;
+    font-weight: bold;
+
+    .glyphicon {
+        color: #f8d106;
+    }
+}
+
+
 // NEWS
 .news, .news .row {
     height: 120px;
