@@ -66,7 +66,6 @@ export default {
 
     methods: {
         fetchData: function(force = false) {
-            console.log('FETCH CHALLENGES')
             // lock requests so we dont spam
             if(this.fetchLock && !force) {
                 return

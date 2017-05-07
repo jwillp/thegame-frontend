@@ -1,16 +1,12 @@
 <template>
-    <div id="game-view">
+    <div id="game-view" v-loading="gameDataLoading">
         <div id="game-view-info">
-
             <div v-if="game">
                 <h1>{{ game.title }}</h1>
                 <p>from {{ format(game.start_date) }} to {{ format(game.end_date, true) }}</p>
             </div>
-            <div v-else>
-                Loading ...
-            </div>
         </div>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick" v-if="game">
 
             <el-tab-pane label="Newsfeed" name="newsfeed">
                 <div class="well">
@@ -33,7 +29,11 @@
             </el-tab-pane>
 
             <el-tab-pane label="Leaderboard" name="leaderboard">
-                Leaderboard
+                <div class="well">
+                    <h1 class="text-center"><img src="./../assets/images/leaderboard.png" width="400px" alt="Newsfeed"></h1>
+                    <h2 class="text-center">Leaderboard</h2>
+                    <GameLeaderboardView :gameId="game.id"></GameLeaderboardView>
+                </div>
             </el-tab-pane>
 
             <el-tab-pane label="Config" name="config">
@@ -50,6 +50,7 @@ import router from '../router'
 import moment from 'moment'
 
 import ChallengeListView from './ChallengeListView'
+import GameLeaderboardView from './GameLeaderboardView.vue'
 
 export default {
     data: () => {
@@ -114,7 +115,8 @@ export default {
     },
 
     components: {
-        ChallengeListView
+        ChallengeListView,
+        GameLeaderboardView
     }
 }
 </script>

@@ -14,6 +14,7 @@ const REGISTER_URL = API_URL + '/users/register'
 const CREATE_GAME_URL = API_URL + '/games/new'
 const GET_GAMES_URL = API_URL + '/games'
 const GET_GAME_URL = API_URL + '/games/:id'
+const GET_GAME_LEADERBOARD = API_URL + '/games/:id/leaderboard'
 
 const GET_CHALLENGES_URL = API_URL + '/games/:id/challenges'
 const CREATE_CHALLENGE_URL = API_URL + '/games/:id/challenges/new'
@@ -44,6 +45,7 @@ export default {
         localStorage.setItem('token', response.body.token)
         self.user.authenticated = true
         self.user.username = creds.username
+        localStorage.setItem('username', self.user.username)
 
         successCallback(response)
 
@@ -79,6 +81,8 @@ export default {
     else {
       this.user.authenticated = false
     }
+
+    this.user.username = localStorage.getItem('username')
   },
 
   // The object to be passed as a header for authenticated requests
@@ -171,6 +175,15 @@ export default {
       headers: self.getAuthHeader()
     }
     context.$http.get(GET_NEWS_URL, options)
+                 .then(successCallback, errorCallback)
+  },
+
+  getLeaderboard(context, gameId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_GAME_LEADERBOARD.replace(':id',  gameId), options)
                  .then(successCallback, errorCallback)
   }
 }

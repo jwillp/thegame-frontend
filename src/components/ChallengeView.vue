@@ -4,6 +4,11 @@
             <div v-if="challenge">
                 <div class="panel panel-default">
                   <div class="panel-body">
+                    <h3>
+                        <router-link :to="{name:'games_view', params:{ id: challenge.game.id }}">
+                          {{ challenge.game.title }}
+                        </router-link>
+                    </h3>
                     <h1>{{ challenge.title }}</h1>
                     <p>{{ challenge.description }}</p>
                     <h3>{{ challenge.nb_points }} pts</h3>
@@ -70,9 +75,7 @@ export default {
             fetchChallengeDataLock: false,
             challengeDataLoading: true,
 
-            fetchDataInterval: undefined,
-
-            dialogNewGameVisible: false
+            fetchDataInterval: undefined
         }
     },
 
