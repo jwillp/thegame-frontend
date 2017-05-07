@@ -10,7 +10,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <router-link :to="{name:'home'}" class="navbar-brand">The Game</router-link>
+          <router-link :to="{name:'home'}" class="navbar-brand">
+            <img class="logo" src="./assets/images/logo_min.png" height="50px">
+          </router-link>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -59,7 +61,6 @@ export default {
   data() {
     return {
       user: api.user,
-
 
       activeIndex: "home"
     }
