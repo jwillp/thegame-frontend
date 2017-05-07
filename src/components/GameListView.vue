@@ -73,7 +73,7 @@ export default {
                 return
             }
             this.fetchLock = true
-            self = this
+            var self = this
             api.getGames(this, function(response) {
                 self.games = response.body.items
                 self.count = response.body.count

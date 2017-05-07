@@ -96,7 +96,7 @@ export default {
                 return
             }
             this.fetchChallengeDataLock = true
-            self = this
+            var self = this
             api.getChallenge(this, this.$route.params.id,  function(response) {
                 self.challenge = response.body
                 self.fetchChallengeDataLock = false

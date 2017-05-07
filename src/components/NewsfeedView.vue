@@ -47,7 +47,7 @@ export default {
                 return
             }
             this.fetchLock = true
-            self = this
+            var self = this
             api.getNews(this, function(response) {
                 self.newsList = response.body.items
                 self.count = response.body.count
