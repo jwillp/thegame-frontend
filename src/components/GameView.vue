@@ -25,7 +25,7 @@
 
             <el-tab-pane label="Challenges" name="challenges">
                 <div v-if="game">
-                    <div class="well">
+                    <div id="challenge-list-container" class="well">
                         <h1 class="text-center"><img src="./../assets/images/challenge.png" width="400px" alt="Newsfeed"></h1>
                         <h2 class="text-center">Challenges</h2>
                         <ChallengeListView :gameId='game.id'></ChallengeListView>

@@ -24,7 +24,7 @@
                 </el-input>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" @keydown.enter="login">
                 <el-input
                     v-model="credentials.password"
                     type="password"

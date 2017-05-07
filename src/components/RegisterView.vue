@@ -52,7 +52,7 @@
             </div>
 
             <div class="form-group">
-                <div class="form-error-block" v-if="errors.plain_password_confirm">
+                <div class="form-error-block" v-if="errors.plain_password_confirm" @keydown.enter="registerUser">
                     <p class="form-error" v-for="error in errors.plain_password_confirm">{{ error }}</p>
                 </div>
                 <el-input
