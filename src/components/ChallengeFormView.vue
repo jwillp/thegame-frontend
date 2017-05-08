@@ -40,7 +40,7 @@
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" @click="createChallenge" :loading="challengeInCreation">Create</el-button>
-      <el-button @click="dialogVisible = false">Cancel</el-button>
+      <el-button @click="dialogVisible = false" :disabled="challengeInCreation">Cancel</el-button>
     </span>
   </el-dialog>
 </template>
@@ -101,14 +101,24 @@ export default {
                   self.dialogVisible = false
                   self.challengeInCreation = false
 
+                  self.resetForm()
+                  // TODO Display alert success
               },
               // ERROR CALLBACK
               function(response) {
                   console.log(response)
-                  self.errors = response.body.errors
+                  self.errors = response.body.errors || {}
                   self.challengeInCreation = false
               }
           )
+        },
+
+        resetForm: function() {
+          this.fields = {
+                title: '',
+                description: '',
+                nb_points: 10
+          }
         }
     },
 }

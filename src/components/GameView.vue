@@ -45,7 +45,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="Config" name="config">
-                Config
+                
             </el-tab-pane>
 
         </el-tabs>

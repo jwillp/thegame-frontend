@@ -58,8 +58,8 @@
       </form>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="createGame" :loading="gameInCreation">Create</el-button>
-      <el-button @click="dialogVisible = false" :disabled="gameInCreation">Cancel</el-button>
+      <el-button type="primary" @click="createGame">Create</el-button>
+      <el-button @click="dialogVisible = false">Cancel</el-button>
     </span>
   </el-dialog>
 </template>
@@ -75,8 +75,6 @@ export default {
     data: () => {
         return {
             dialogVisible: false,
-
-            gameInCreation: false,
 
             fields: {
                 title: '',
@@ -130,33 +128,18 @@ export default {
 
     methods: {
         createGame: function() {
-          this.gameInCreation = true
           var self = this
           var response = api.createGame(this, this.fields,
               // SUCCES CALLBACK
               function(response) {
-                self.gameInCreation = false
-                self.dialogVisible = false
-
-                self.resetForm()
-                // TODO Display alert success
+                  alert('COOL');
               },
               // ERROR CALLBACK
               function(response) {
-                self.gameInCreation = false
-                console.log(response)
-                self.errors = response.body.errors || {}
+                  console.log(response)
+                  self.errors = response.body.errors
               }
           )
-        },
-
-        resetForm: function() {
-          this.fields = {
-                title: '',
-                description: '',
-                start_date: '',
-                end_date: ''
-           }
         }
     },
 }
