@@ -55,6 +55,15 @@
                   :picker-options="pickerOptions">
             </el-date-picker>
         </div>
+
+        <!-- Visibility -->
+        <div class="form-group">
+          <p>Visibility</p>
+          <el-radio-group v-model="visibility">
+            <el-radio-button label="Public"><i class="glyphicon glyphicon-globe">&nbsp;</i>Public</el-radio-button>
+            <el-radio-button label="Private"><i class="glyphicon glyphicon-lock">&nbsp;</i>Private</el-radio-button>
+          </el-radio-group>
+        </div>
       </form>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -86,6 +95,8 @@ export default {
             },
 
             errors: {},
+
+            visibility: 'Public',
 
             pickerOptions: {
               shortcuts: [{
@@ -125,6 +136,11 @@ export default {
 
       dialogVisible(newVal){
         this.$emit('input', this.dialogVisible)
+      },
+
+      visibility: function(newValue) {
+        newValue = newValue + ''
+        this.fields.visibility = 'VISIBILITY_' + newValue.toUpperCase()
       }
     },
 
@@ -166,7 +182,8 @@ export default {
                 title: '',
                 description: '',
                 start_date: '',
-                end_date: ''
+                end_date: '',
+                visibility: 'Public'
            }
         }
     },
