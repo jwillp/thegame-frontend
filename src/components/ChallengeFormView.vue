@@ -103,12 +103,24 @@ export default {
 
                   self.resetForm()
                   // TODO Display alert success
+                  this.$notify({
+                    title: 'Success',
+                    message: 'Challenge created successfully',
+                    type: 'success'
+                  });
               },
               // ERROR CALLBACK
               function(response) {
                   console.log(response)
                   self.errors = response.body.errors || {}
                   self.challengeInCreation = false
+
+                  if(!response.body.errors) {
+                    this.$notify.error({
+                      title: 'Error',
+                      message: 'There was an error creating the challenge, please try again later.'
+                    });
+                  }
               }
           )
         },

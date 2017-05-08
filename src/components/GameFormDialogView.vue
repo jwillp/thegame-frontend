@@ -139,13 +139,24 @@ export default {
                 self.dialogVisible = false
 
                 self.resetForm()
-                // TODO Display alert success
+                this.$notify({
+                  title: 'Success',
+                  message: 'Challenge created successfully',
+                  type: 'success'
+                });
               },
               // ERROR CALLBACK
               function(response) {
                 self.gameInCreation = false
                 console.log(response)
                 self.errors = response.body.errors || {}
+
+                if(!response.body.errors) {
+                  this.$notify.error({
+                    title: 'Error',
+                    message: 'There was an error creating the game, please try again later.'
+                  });
+                }
               }
           )
         },

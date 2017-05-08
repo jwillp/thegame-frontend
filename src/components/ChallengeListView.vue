@@ -81,8 +81,14 @@ export default {
                 if(self.challengesLoading) {
                     self.challengesLoading = false
                 }
-            }, function(responese){
-                console.log(responese)
+            }, function(response){
+                console.log(response)
+
+                this.$notify.error({
+                  title: 'Error',
+                  message: 'There was an error, please try again later.'
+                });
+
                 // initial loading
                 if(self.challengesLoading) {
                     self.challengesLoading = false

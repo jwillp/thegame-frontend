@@ -58,6 +58,10 @@ export default {
                 }
             }, function(response){
                 console.log(response)
+                this.$notify.error({
+                  title: 'Error',
+                  message: 'There was an error, please try again later.'
+                });
                 // initial loading
                 if(self.newsLoading) {
                     self.newsLoading = false
