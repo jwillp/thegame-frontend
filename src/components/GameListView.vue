@@ -19,7 +19,11 @@
                       </router-link>
                     </h2>
                     <p>{{ game.description }}</p>
-                    <p class="text-primary">From <b>{{ format(game.start_date) }}</b> to <b>{{ format(game.end_date, true) }}</b></p>
+                    <p class="text-primary">
+                        From <b>{{ format(game.start_date) }}</b> 
+                        to <b>{{ format(game.end_date, true) }}</b>
+                    </p>
+                    <p>Time left: {{ timeLeft(game.end_date) }}</p>
 
                     <p v-if="game.visibility == 'VISIBILITY_PRIVATE'">
                         <i class="glyphicon glyphicon-lock"></i> Private
@@ -101,6 +105,18 @@ export default {
                 dateFormat = "YYYY/MM/DD [at] HH:mm"
 
             return moment(date).format(dateFormat)
+        },
+
+        timeLeft: function(endDate) {
+            var now = moment()
+            endDate = moment(endDate)
+            if(now.isAfter(endDate)) {
+                return "Finished"
+            }else {
+                return endDate.from(now)
+                              .replace('in ', '')
+                              .replace('a day', '1 day');
+            }
         },
 
         viewGame: function(game) {

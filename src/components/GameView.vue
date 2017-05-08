@@ -6,6 +6,7 @@
                     {{ game.title }}
                 </h1>
                 <p>from {{ format(game.start_date) }} to {{ format(game.end_date, true) }}</p>
+                <p>Time left: {{ timeLeft(game.end_date) }}</p>
                 <p v-if="game.visibility == 'VISIBILITY_PRIVATE'">
                     <i class="glyphicon glyphicon-lock"></i> Private
                 </p>
@@ -91,7 +92,6 @@ export default {
 
     methods: {
         fetchGameData: function(force = false) {
-            console.log("HELLO!");
             // lock requests so we dont spam
             if(this.fetchGameDataLock && !force) {
                 return
@@ -130,13 +130,25 @@ export default {
           //console.log(tab, event);
         },
 
-        isCurrentUserAdmin(){
+        isCurrentUserAdmin: function(){
             for (var i = this.game.administrators.length - 1; i >= 0; i--) {
                 if(this.game.administrators[i].username == api.user.username){
                     return true
                 }
             }
             return false
+        },
+
+        timeLeft: function(endDate) {
+            var now = moment()
+            endDate = moment(endDate)
+            if(now.isAfter(endDate)) {
+                return "Finished"
+            }else {
+                return endDate.from(now)
+                              .replace('in ', '')
+                              .replace('a day', '1 day');
+            }
         }
     },
 
