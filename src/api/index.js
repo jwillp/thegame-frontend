@@ -15,12 +15,14 @@ const CREATE_GAME_URL = API_URL + '/games/new'
 const GET_GAMES_URL = API_URL + '/games'
 const GET_GAME_URL = API_URL + '/games/:id'
 const GET_GAME_LEADERBOARD = API_URL + '/games/:id/leaderboard'
+const UPDATE_GAME_URL = API_URL + '/games/:id'
 
 const GET_CHALLENGES_URL = API_URL + '/games/:id/challenges'
 const CREATE_CHALLENGE_URL = API_URL + '/games/:id/challenges/new'
 const GET_CHALLENGE_URL = API_URL + '/challenges/:id'
 const COMPLETE_CHALLENGE_URL = API_URL + '/challenges/:id/complete'
 const CANCEL_CHALLENGE_URL = API_URL + '/challenges/:id/cancel'
+
 const GET_NEWS_URL = API_URL + '/events'
 
 
@@ -111,6 +113,15 @@ export default {
       headers: self.getAuthHeader()
     }
     context.$http.get(GET_GAME_URL.replace(':id', gameId), options)
+                 .then(successCallback, errorCallback)
+  },
+
+  updateGame(context, gameId, data, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.put(UPDATE_GAME_URL.replace(':id', gameId), data, options)
                  .then(successCallback, errorCallback)
   },
 

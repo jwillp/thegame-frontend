@@ -44,8 +44,11 @@
                 </div>
             </el-tab-pane>
 
-            <el-tab-pane label="Config" name="config">
-                
+            <el-tab-pane label="Settings" name="settings" v-if="isCurrentUserAdmin()">
+                <div id="game-settings" class="well">
+                    <h1>Game Settings</h1>
+                    <GameEditFormView :game="game"></GameEditFormView>
+                </div>
             </el-tab-pane>
 
         </el-tabs>
@@ -59,6 +62,7 @@ import moment from 'moment'
 
 import ChallengeListView from './ChallengeListView'
 import GameLeaderboardView from './GameLeaderboardView.vue'
+import GameEditFormView from './GameEditFormView.vue'
 
 export default {
     data: () => {
@@ -87,6 +91,7 @@ export default {
 
     methods: {
         fetchGameData: function(force = false) {
+            console.log("HELLO!");
             // lock requests so we dont spam
             if(this.fetchGameDataLock && !force) {
                 return
@@ -122,13 +127,23 @@ export default {
         },
 
         handleClick(tab, event) {
-          console.log(tab, event);
+          //console.log(tab, event);
+        },
+
+        isCurrentUserAdmin(){
+            for (var i = this.game.administrators.length - 1; i >= 0; i--) {
+                if(this.game.administrators[i].username == api.user.username){
+                    return true
+                }
+            }
+            return false
         }
     },
 
     components: {
         ChallengeListView,
-        GameLeaderboardView
+        GameLeaderboardView,
+        GameEditFormView
     }
 }
 </script>
