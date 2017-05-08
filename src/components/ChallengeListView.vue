@@ -15,6 +15,7 @@
                     </router-link>
                   </h2>
                   <p>{{ challenge.description }}</p>
+                  <p>Created by {{ challenge.created_by.username }}</p>
                 </div>
                 <div class="col-xs-2 text-right">
                   <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">

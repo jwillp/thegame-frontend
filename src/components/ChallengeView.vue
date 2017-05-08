@@ -12,6 +12,7 @@
                     <h1>{{ challenge.title }}</h1>
                     <p>{{ challenge.description }}</p>
                     <h3>{{ challenge.nb_points }} pts</h3>
+                    <p>Created by {{ challenge.created_by.username }}</p>
                   </div>
                   <div class="panel-footer">
                     <div class="btn-group">
@@ -56,9 +57,6 @@
                   </div>  <!-- .challenge-score-list -->
                 </div><!-- /.panel -->
             </div> <!-- .challenge -->
-            <div v-else>
-                
-            </div>
         </div>
     </div>
 </template>
