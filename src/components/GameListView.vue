@@ -90,7 +90,7 @@ export default {
                 console.log(response)
                 this.$notify.error({
                   title: 'Error',
-                  message: 'There was an error creating the challenge, please try again later.'
+                  message: 'There was an error loading games, please try again later.'
                 });
                 // initial loading
                 if(self.gameLoading) {

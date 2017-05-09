@@ -1,6 +1,6 @@
 <template>
     <div id="game-form" class="modal-container">
-      <form id="login-form" v-on:submit.prevent="createGame">
+      <form id="login-form" v-on:submit.prevent="updateGame">
         <!-- title -->
         <div class="form-group">
             <p>Title</p>
@@ -65,17 +65,11 @@
             <div class="form-error-block" v-if="errors.administrators">
                 <p class="form-error" v-for="error in errors.administrators">{{ error }}</p>
             </div>
-            <el-select v-model="fields.administrators" 
-                       filterable 
-                       multiple
-                       placeholder="Administrators">
-                <el-option
-                  v-for="user in availableUsers"
-                  :key="user.id"
-                  :label="user.username"
-                  :value="user.username">
-                </el-option>
-            </el-select>
+            <UserSelector
+                          placeholder="Administrators"
+                          :default-users="administrators"
+                          v-model="administrators"
+                          ></UserSelector>
         </div>
 
         <!-- Visibility -->
@@ -92,27 +86,24 @@
             <div class="form-error-block" v-if="errors.authorized_players">
                 <p class="form-error" v-for="error in errors.authorized_players">{{ error }}</p>
             </div>
-            <el-select v-model="fields.authorized_players" 
-                       filterable 
-                       multiple
-                       placeholder="Authorized Players">
-                <el-option
-                  v-for="user in availableUsers"
-                  :key="user.id"
-                  :label="user.username"
-                  :value="user.username">
-                </el-option>
-            </el-select>
+            <UserSelector
+                          placeholder="Authorized players"
+                          :default-users="authorized_players"
+                          v-model="authorized_players"
+                          ></UserSelector>
         </div>
       </form>
-      <el-button type="primary" @click="createGame" :loading="formInProcess">Update</el-button>
+      <el-button type="primary" @click="updateGame" :loading="formInProcess">Update</el-button>
     </div>
 </template>
 
 <script>
+import UserSelector from './UserSelector.vue'
+
 import moment from 'moment'
 
 import api from '../api'
+
 export default {
 
     props: ["game"],
@@ -128,12 +119,15 @@ export default {
                 end_date: '',
                 visibility: '',*/
             },
+            // watchers for select
+            administrators : '',
+            authorized_players : '',
+
 
             visibility: '',
 
             errors: {},
 
-            availableUsers: [],
 
             pickerOptions: {
               shortcuts: [{
@@ -163,6 +157,7 @@ export default {
     },
 
     created: function() {
+     
       this.fields = {
           title: this.game.title,
           description: this.game.description,
@@ -181,7 +176,7 @@ export default {
         var user = this.game.administrators[i]
         admins.push(user.username)
       }
-      this.fields.administrators = admins
+      this.administrators = admins
 
       // Set Authorized users
       var authPlayers = []
@@ -189,11 +184,7 @@ export default {
         var user = this.game.authorized_players[i]
         authPlayers.push(user.username)
       }
-      this.fields.authorized_players = authPlayers
-
-      // Define available users
-      this.availableUsers = this.game.administrators
-
+      this.authorized_players = authPlayers
     },
 
     watch: {
@@ -204,8 +195,14 @@ export default {
     },
 
     methods: {
-        createGame: function() {
+        updateGame: function() {
           this.formInProcess = true
+
+          this.fields.administrators = this.administrators
+          this.fields.authorized_players = this.authorized_players
+
+          console.log(this.fields)
+
           var self = this
           var response = api.updateGame(this, this.game.id, this.fields,
               // SUCCES CALLBACK
@@ -232,7 +229,11 @@ export default {
                 }
               }
           )
-        }
+        },
     },
+
+    components: {
+      UserSelector
+    }
 }
 </script>

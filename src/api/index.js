@@ -25,6 +25,8 @@ const CANCEL_CHALLENGE_URL = API_URL + '/challenges/:id/cancel'
 
 const GET_NEWS_URL = API_URL + '/events'
 
+const GET_USERS_URL = API_URL + '/users'
+
 
 export default {
 
@@ -125,6 +127,15 @@ export default {
                  .then(successCallback, errorCallback)
   },
 
+  getLeaderboard(context, gameId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_GAME_LEADERBOARD.replace(':id',  gameId), options)
+                 .then(successCallback, errorCallback)
+  },
+
   getChallenges(context, gameId, successCallback, errorCallback) {
     var self = this
     var options = {
@@ -183,12 +194,12 @@ export default {
                  .then(successCallback, errorCallback)
   },
 
-  getLeaderboard(context, gameId, successCallback, errorCallback) {
+  getUsers(context, successCallback, errorCallback) {
     var self = this
     var options = {
       headers: self.getAuthHeader()
     }
-    context.$http.get(GET_GAME_LEADERBOARD.replace(':id',  gameId), options)
+    context.$http.get(GET_USERS_URL, options)
                  .then(successCallback, errorCallback)
   }
 }

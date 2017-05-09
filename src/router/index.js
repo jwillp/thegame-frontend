@@ -10,6 +10,10 @@ import GameView from '@/components/GameView'
 import ChallengeView from '@/components/ChallengeView'
 import NewsfeedView from '@/components/NewsfeedView'
 
+
+import SandboxView from '@/components/SandboxView'
+
+
 Vue.use(Router)
 
 
@@ -58,7 +62,7 @@ export default new Router({
     {
       path: '/user/:id',
       name: 'user_profile',
-      component: HomeView
+      component: SandboxView
     }
   ]
 })

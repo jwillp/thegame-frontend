@@ -50,6 +50,7 @@
                     <h1>Game Settings</h1>
                     <GameEditFormView :game="game"></GameEditFormView>
                 </div>
+
             </el-tab-pane>
 
         </el-tabs>
