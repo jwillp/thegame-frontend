@@ -48,9 +48,12 @@
             <el-tab-pane label="Settings" name="settings" v-if="isCurrentUserAdmin()">
                 <div id="game-settings" class="well">
                     <h1>Game Settings</h1>
+                    <button class="btn btn-primary" @click="onDelete">
+                        <i class="glyphicon glyphicon-trash"></i>&nbsp; 
+                        Delete Game
+                    </button>
                     <GameEditFormView :game="game"></GameEditFormView>
                 </div>
-
             </el-tab-pane>
 
         </el-tabs>
@@ -120,6 +123,23 @@ export default {
             })
         },
 
+        deleteGame: function() {
+            self = this
+            api.deleteGame(this, this.game.id,  function(response) {
+                this.$notify.success({
+                  title: 'Success',
+                  message: 'The Game was successfully deleted'
+                });
+                router.replace('/')
+            }, function(response){
+                console.log(response)
+                this.$notify.error({
+                  title: 'Error',
+                  message: 'There was an error, please try again later.'
+                });
+            })
+        },
+
         format: function(date, displayTime) {
             var dateFormat = "YYYY/MM/DD"
             if(displayTime)
@@ -149,8 +169,18 @@ export default {
             }else {
                 return endDate.from(now)
                               .replace('in ', '')
-                              .replace('a day', '1 day');
+                              .replace('a day', '1 day')
             }
+        },
+
+        onDelete: function() {
+            this.$confirm('This will permanently delete the Game. Continue?', 'Warning', {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning'
+            }).then(() => {
+                this.deleteGame()
+            })
         }
     },
 

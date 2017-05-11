@@ -16,6 +16,7 @@ const GET_GAMES_URL = API_URL + '/games'
 const GET_GAME_URL = API_URL + '/games/:id'
 const GET_GAME_LEADERBOARD = API_URL + '/games/:id/leaderboard'
 const UPDATE_GAME_URL = API_URL + '/games/:id'
+const DELETE_GAME_URL = API_URL + '/games/:id'
 
 const GET_CHALLENGES_URL = API_URL + '/games/:id/challenges'
 const CREATE_CHALLENGE_URL = API_URL + '/games/:id/challenges/new'
@@ -124,6 +125,15 @@ export default {
       headers: self.getAuthHeader()
     }
     context.$http.put(UPDATE_GAME_URL.replace(':id', gameId), data, options)
+                 .then(successCallback, errorCallback)
+  },
+
+  deleteGame(context, gameId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.delete(DELETE_GAME_URL.replace(':id', gameId), options)
                  .then(successCallback, errorCallback)
   },
 
