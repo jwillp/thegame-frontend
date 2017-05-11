@@ -98,6 +98,7 @@ export default {
             api.getChallenge(this, this.$route.params.id,  function(response) {
                 self.challenge = response.body
                 self.fetchChallengeDataLock = false
+                document.title = 'The Game | ' + self.challenge.title
                 // initial loading
                 if(self.challengeDataLoading) {
                     self.challengeDataLoading = false

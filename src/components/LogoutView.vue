@@ -10,6 +10,7 @@ import router from '../router'
 export default {
 
     created: function() {
+        document.title = 'The Game | Logout' 
         api.logout()
     }
 }

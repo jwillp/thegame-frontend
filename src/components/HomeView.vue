@@ -15,6 +15,7 @@ import api from '../api'
 
 export default {
     created: function(){
+        document.title = 'The Game | Home' 
         if(api.user.authenticated) {
             router.replace('/games')
         }

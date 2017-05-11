@@ -102,6 +102,7 @@ export default {
             api.getGame(this, this.$route.params.id,  function(response) {
                 self.game = response.body
                 self.fetchGameDataLock = false
+                document.title = 'The Game | ' + self.game.title
                 // initial loading
                 if(self.gameDataLoading) {
                     self.gameDataLoading = false

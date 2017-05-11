@@ -61,6 +61,7 @@ export default {
     },
 
     created: function() {
+        document.title = 'The Game | Games'
         var self = this
         this.fetchData(true)
         this.fetchInterval = setInterval(function(){ self.fetchData() }, 1000 * 10)

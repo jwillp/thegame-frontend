@@ -30,6 +30,7 @@ export default {
     },
 
     created: function() {
+        document.title = 'The Game | Newsfeed' 
         var self = this
         this.fetchData(true)
         this.fetchInterval = setInterval(function(){ self.fetchData() }, 1000 * 10)

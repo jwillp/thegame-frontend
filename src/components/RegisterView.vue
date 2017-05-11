@@ -92,6 +92,7 @@ export default {
     },
 
     created: function() {
+        document.title = 'The Game | Register' 
         if(api.user.authenticated) {
             router.replace('/')
         }
