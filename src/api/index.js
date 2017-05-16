@@ -4,7 +4,7 @@
 import router from '../router'
 
 // URL and endpoint constants
-const HOST = 'http://localhost/thegame/web/app_dev.php'
+const HOST = 'http://localhost/thegame-backend/web/app_dev.php'
 
 const API_URL = HOST + '/api'
 
