@@ -1,4 +1,9 @@
 # thegame-frontend
+|Branch | Status |
+|-------|--------|
+|Dev   | [![Build Status](https://travis-ci.org/jwillp/thegame-frontend.svg?branch=dev)](https://travis-ci.org/jwillp/thegame-frontend)   |
+|Master | [![Build Status](https://travis-ci.org/jwillp/thegame-frontend.svg?branch=master)](https://travis-ci.org/jwillp/thegame-frontend) |    
+
 
 > A Vue.js project
 
