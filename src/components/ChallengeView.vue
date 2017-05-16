@@ -1,6 +1,7 @@
 <template>
     <div id="challenge-view" v-loading="challengeDataLoading">
-        <div class="well page-controls" v-if="isCurrentUserAdmin()">
+        <div class="well page-controls" v-if="isCurrentUserAdmin() && 
+                                              !challenge.game.is_finished">
 
 <!--             <el-button type="primary" @click="">
                 <i class="glyphicon glyphicon-trash"></i>&nbsp;
@@ -27,7 +28,7 @@
                     <h3>{{ challenge.nb_points }} pts</h3>
                     <p>Created by {{ challenge.created_by.username }}</p>
                   </div>
-                  <div class="panel-footer">
+                  <div class="panel-footer" v-if="!challenge.game.is_finished">
                     <div class="btn-group">
                       <a class="btn btn-danger" @click="cancelChallenge">
                         <i class="glyphicon glyphicon-remove"></i>

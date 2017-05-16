@@ -1,6 +1,6 @@
 <template>
     <div id="challengeList-view">
-        <div class="page-controls">
+        <div class="page-controls" v-if="game && !game.is_finished">
             <el-button type="primary" @click="dialogNewChallengeVisible = true">New Challenge</el-button>
         </div> <!-- /page-controls -->
 
@@ -28,7 +28,9 @@
           </div> <!-- /.panel -->
         </div>
 
-        <ChallengeFormView v-model="dialogNewChallengeVisible" :gameId="gameId"></ChallengeFormView>
+        <ChallengeFormView  v-if="!game.is_finished"
+                            v-model="dialogNewChallengeVisible" 
+                            :gameId="game.id"></ChallengeFormView>
     </div> <!-- /challengeList-view -->
 </template>
 
@@ -53,7 +55,7 @@ export default {
         }
     },
 
-    props: ['gameId'],
+    props: ['game'],
 
     created: function() {
         var self = this
