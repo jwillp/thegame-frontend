@@ -20,6 +20,7 @@ const DELETE_GAME_URL = API_URL + '/games/:id'
 
 const GET_CHALLENGES_URL = API_URL + '/games/:id/challenges'
 const CREATE_CHALLENGE_URL = API_URL + '/games/:id/challenges/new'
+const DELETE_CHALLENGE_URL = API_URL + '/challenges/:id'
 const GET_CHALLENGE_URL = API_URL + '/challenges/:id'
 const COMPLETE_CHALLENGE_URL = API_URL + '/challenges/:id/complete'
 const CANCEL_CHALLENGE_URL = API_URL + '/challenges/:id/cancel'
@@ -170,6 +171,15 @@ export default {
       headers: self.getAuthHeader()
     }
     context.$http.get(GET_CHALLENGE_URL.replace(':id',  challengeId), options)
+                 .then(successCallback, errorCallback)
+  },
+
+  deleteChallenge(context, ch, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.delete(DELETE_CHALLENGE_URL.replace(':id', ch), options)
                  .then(successCallback, errorCallback)
   },
 

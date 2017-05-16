@@ -32,6 +32,10 @@ Vue.http.interceptors.push(function(request, next) {
             if(response.body.errors[0] == 'Invalid Token'){
                 // We need to relogin
                 api.logout()
+                this.$notify.info({
+                  title: 'Info',
+                  message: 'You have been logged out automatically'
+                });
                 router.replace('/login')
             }
         }

@@ -48,11 +48,13 @@
             <el-tab-pane label="Settings" name="settings" v-if="isCurrentUserAdmin()">
                 <div id="game-settings" class="well">
                     <h1>Game Settings</h1>
+                    <GameEditFormView :game="game"></GameEditFormView>
+                    <hr>
+                    <h3>Danger zone</h3>
                     <button class="btn btn-primary" @click="onDelete">
                         <i class="glyphicon glyphicon-trash"></i>&nbsp; 
                         Delete Game
                     </button>
-                    <GameEditFormView :game="game"></GameEditFormView>
                 </div>
             </el-tab-pane>
 

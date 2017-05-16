@@ -1,6 +1,19 @@
 <template>
     <div id="challenge-view" v-loading="challengeDataLoading">
-        <div id="game-view-info">
+        <div class="well page-controls" v-if="isCurrentUserAdmin()">
+
+<!--             <el-button type="primary" @click="">
+                <i class="glyphicon glyphicon-trash"></i>&nbsp;
+                Delete challenge
+            </el-button> -->
+
+            <el-button type="primary" @click="onDelete" :loading="deleteInProgress">
+                <i class="glyphicon glyphicon-trash" v-if="!deleteInProgress"
+                ></i>&nbsp;
+                Delete challenge
+            </el-button>
+        </div>
+        <div id="challenge-view-info">
             <div v-if="challenge">
                 <div class="panel panel-default">
                   <div class="panel-body">
@@ -72,8 +85,9 @@ export default {
             challenge: undefined,
             fetchChallengeDataLock: false,
             challengeDataLoading: true,
+            fetchDataInterval: undefined,
 
-            fetchDataInterval: undefined
+            deleteInProgress: false
         }
     },
 
@@ -112,6 +126,34 @@ export default {
                 if(self.challengeDataLoading) {
                     self.challengeDataLoading = false
                 }
+            })
+        },
+
+        deleteChallenge: function() {
+            self = this
+            this.deleteInProgress = true
+            api.deleteChallenge(this, this.challenge.id,  function(response) {
+                this.$notify.success({
+                  title: 'Success',
+                  message: 'The Challenge was successfully deleted'
+                });
+                router.replace('/games/' + self.challenge.game.id)
+            }, function(response){
+                console.log(response)
+                this.$notify.error({
+                  title: 'Error',
+                  message: 'There was an error, please try again later.'
+                });
+            })
+        },
+
+        onDelete: function() {
+            this.$confirm('This will permanently delete the Challenge. Continue?', 'Warning', {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning'
+            }).then(() => {
+                this.deleteChallenge()
             })
         },
 
@@ -182,6 +224,15 @@ export default {
             };
 
             return scores;
+        },
+
+        isCurrentUserAdmin: function(){
+            for (var i = this.challenge.game.administrators.length - 1; i >= 0; i--) {
+                if(this.challenge.game.administrators[i].username == api.user.username){
+                    return true
+                }
+            }
+            return false
         },
 
         /**

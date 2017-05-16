@@ -1,6 +1,6 @@
 <template>
     <div id="logout-view" class="well">
-        <h1>Successfully logged out</h1>
+        <h1></h1>
     </div>
 </template>
 
@@ -10,8 +10,13 @@ import router from '../router'
 export default {
 
     created: function() {
-        document.title = 'The Game | Logout' 
         api.logout()
+        this.$notify({
+           title: 'Success',
+           message: 'Successfully logged out',
+           type: 'success'
+         })
+        router.replace('/')
     }
 }
 </script>

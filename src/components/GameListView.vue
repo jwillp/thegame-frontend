@@ -18,6 +18,7 @@
                         {{ game.title }}
                       </router-link>
                     </h2>
+                    <p>created by {{ game.created_by.username }}</p>
                     <p>{{ game.description }}</p>
                     <p class="text-primary">
                         From <b>{{ format(game.start_date) }}</b> 
