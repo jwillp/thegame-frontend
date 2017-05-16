@@ -1,4 +1,5 @@
-# thegame-frontend
+# ![The Game logo](https://github.com/jwillp/thegame-frontend/blob/dev/src/assets/images/logo.png?raw=true) Frontend
+
 |Branch | Status |
 |-------|--------|
 |Dev   | [![Build Status](https://travis-ci.org/jwillp/thegame-frontend.svg?branch=dev)](https://travis-ci.org/jwillp/thegame-frontend)   |
