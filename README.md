@@ -1,5 +1,4 @@
-# ![The Game logo](https://github.com/jwillp/thegame-frontend/blob/dev/src/assets/images/logo.png?raw=true)
-## Frontend
+# ![The Game logo](https://github.com/jwillp/thegame-frontend/blob/dev/src/assets/images/logo.png?raw=true) Frontend
 
 |Branch | Status |
 |-------|--------|
