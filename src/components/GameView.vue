@@ -18,9 +18,8 @@
         <el-tabs v-model="activeName" @tab-click="handleClick" v-if="game">
 
             <el-tab-pane label="Newsfeed" name="newsfeed">
-                <div class="well">
-                    <h1 class="text-center"><img src="./../assets/images/newsfeed.png" width="400px" alt="Newsfeed"></h1>
-                    <h2 class="text-center">Newsfeed</h2>
+                <div>
+                    <NewsfeedView :gameId="game.id"></NewsfeedView>
                 </div>
             </el-tab-pane>
 
@@ -70,6 +69,7 @@ import moment from 'moment'
 import ChallengeListView from './ChallengeListView'
 import GameLeaderboardView from './GameLeaderboardView.vue'
 import GameEditFormView from './GameEditFormView.vue'
+import NewsfeedView from './NewsfeedView.vue'
 
 export default {
     data: () => {
@@ -189,7 +189,8 @@ export default {
     components: {
         ChallengeListView,
         GameLeaderboardView,
-        GameEditFormView
+        GameEditFormView,
+        NewsfeedView
     }
 }
 </script>

@@ -18,10 +18,13 @@ import router from '../router'
 import NewsView from './NewsView'
 
 export default {
+    props: ['gameId'],
+
     data: () => {
         return {
             newsList: [],
             count: -1,
+
 
             fetchLock: false,
             newsLoading: true,
@@ -49,7 +52,11 @@ export default {
             }
             this.fetchLock = true
             var self = this
-            api.getNews(this, function(response) {
+            
+
+            var onSuccess = function(response) {
+                
+                console.log(response)
                 self.newsList = response.body.items
                 self.count = response.body.count
                 self.fetchLock = false
@@ -57,7 +64,9 @@ export default {
                 if(self.newsLoading) {
                     self.newsLoading = false
                 }
-            }, function(response){
+            }
+
+            var onError = function(response){
                 console.log(response)
                 this.$notify.error({
                   title: 'Error',
@@ -67,7 +76,13 @@ export default {
                 if(self.newsLoading) {
                     self.newsLoading = false
                 }
-            })
+            }
+
+            if(this.gameId) {
+                api.getGameNews(this, this.gameId, onSuccess , onError);
+            } else {
+                api.getNews(this, onSuccess , onError);
+            }
         }
     },
 

@@ -138,6 +138,15 @@ export default {
                  .then(successCallback, errorCallback)
   },
 
+  getGameNews(context, gameId, successCallback, errorCallback) {
+    var self = this
+    var options = {
+      headers: self.getAuthHeader()
+    }
+    context.$http.get(GET_NEWS_URL + '?gameId=' + gameId, options)
+                 .then(successCallback, errorCallback)
+  },
+
   getLeaderboard(context, gameId, successCallback, errorCallback) {
     var self = this
     var options = {
