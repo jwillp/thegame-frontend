@@ -26,7 +26,7 @@
             <el-tab-pane label="Challenges" name="challenges">
                 <div v-if="game">
                     <div id="challenge-list-container" class="well">
-                        <h1 class="text-center"><img src="./../assets/images/challenge.png" width="400px" alt="Newsfeed"></h1>
+                        <h1 class="text-center"><img src="./../assets/images/challenge.png" width="400px" alt="Newsfeed" class="title-image"></h1>
                         <h2 class="text-center">Challenges</h2>
                         <ChallengeListView :game="game"></ChallengeListView>
                     </div>
@@ -38,7 +38,7 @@
 
             <el-tab-pane label="Leaderboard" name="leaderboard">
                 <div class="well">
-                    <h1 class="text-center"><img src="./../assets/images/leaderboard.png" width="400px" alt="Newsfeed"></h1>
+                    <h1 class="text-center"><img src="./../assets/images/leaderboard.png" width="400px" alt="Newsfeed" class="title-image"></h1>
                     <h2 class="text-center">Leaderboard</h2>
                     <GameLeaderboardView :gameId="game.id"></GameLeaderboardView>
                 </div>

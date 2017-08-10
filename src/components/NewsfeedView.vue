@@ -1,6 +1,8 @@
 <template>
     <div id="newsfeed-view" class="well">
-        <h1 class="text-center"><img src="./../assets/images/newsfeed.png" width="400px" alt="Newsfeed"></h1>
+        <h1 class="text-center">
+            <img src="./../assets/images/newsfeed.png" width="400px" alt="Newsfeed" class="title-image">
+        </h1>
         <h2 class="text-center">Newsfeed</h2>
         <div class="news-list" v-loading="newsLoading" element-loading-text="Loading...">
             <div v-for="news in newsList">

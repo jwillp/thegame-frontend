@@ -93,6 +93,12 @@
     font-weight: bold;
 }
 
+
+.title-image {
+    @extend .img-responsive;
+    display: inline;
+}
+
 /* UTILS */
 
 .center-xy{
