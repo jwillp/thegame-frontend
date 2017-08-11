@@ -27,7 +27,7 @@ Note: A Game should be seen as a container of challenges. It is like a competiti
 - User registration
 - User login
 
-## Game Management Features
+### Game Management Features
 - CRUD Games
     - Description
     - Title
@@ -40,7 +40,7 @@ Note: A Game should be seen as a container of challenges. It is like a competiti
 - Canceling a challenge's success
 - Displaying a leaderboard
 
-## Newsfeed
+### Newsfeed
 - Global newsfeed displaying the different actions commited by users such as:
   - A user creating a game
   - A user completing a challenge
