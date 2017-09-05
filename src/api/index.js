@@ -4,8 +4,15 @@
 import router from '../router'
 
 // URL and endpoint constants
-//const HOST = 'http://localhost/thegame-backend/web'
-const HOST = 'http://138.197.145.66/thegame-backend/web'
+const LOCAL_ENV = false
+
+var HOST
+
+if (LOCAL_ENV) {
+  HOST = 'http://localhost/thegame-backend/web'
+} else {
+  HOST = 'http://138.197.145.66/thegame-backend/web'
+}
 
 const API_URL = HOST + '/api'
 
