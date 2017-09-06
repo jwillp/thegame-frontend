@@ -18,13 +18,17 @@
                         {{ game.title }}
                       </router-link>
                     </h2>
-                    <p>created by {{ game.created_by.username }}</p>
+                    <p>Created by <a href="">{{ game.created_by.username }}</a></p>
                     <p>{{ game.description }}</p>
                     <p class="text-primary">
                         From <b>{{ format(game.start_date) }}</b> 
                         to <b>{{ format(game.end_date, true) }}</b>
                     </p>
-                    <p>Time left: {{ timeLeft(game.end_date) }}</p>
+                    <p>Time left: 
+
+                        <b class="text-warning" v-if="game.is_finished">{{ timeLeft(game.end_date) }}</b>
+                        <span v-else>{{ timeLeft(game.end_date) }}</span>
+                    </p>
 
                     <p v-if="game.visibility == 'VISIBILITY_PRIVATE'">
                         <i class="glyphicon glyphicon-lock"></i> Private
