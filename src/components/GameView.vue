@@ -1,12 +1,20 @@
 <template>
     <div id="game-view" v-loading="gameDataLoading">
+        <div class="alert alert-warning" role="alert" v-if="game.is_finished">
+            <i class="glyphicon glyphicon-exclamation-sign"></i>
+            <strong>Warning!</strong> The current game is finished. Therefore  some features are disabled such as creating challenge or updating scores.
+        </div>
         <div id="game-view-info">
             <div v-if="game">
                 <h1>
                     {{ game.title }}
                 </h1>
                 <p>from {{ format(game.start_date) }} to {{ format(game.end_date, true) }}</p>
-                <p>Time left: {{ timeLeft(game.end_date) }}</p>
+                <p>Time left: 
+
+                    <b class="text-warning" v-if="game.is_finished">{{ timeLeft(game.end_date) }}</b>
+                    <span v-else>{{ timeLeft(game.end_date) }}</span>
+                </p>
                 <p v-if="game.visibility == 'VISIBILITY_PRIVATE'">
                     <i class="glyphicon glyphicon-lock"></i> Private
                 </p>
@@ -111,6 +119,9 @@ export default {
                 // initial loading
                 if(self.gameDataLoading) {
                     self.gameDataLoading = false
+                    if(self.game.is_finished){
+                        self.activeName = 'leaderboard'
+                    }
                 }
             }, function(response){
                 console.log(response)
