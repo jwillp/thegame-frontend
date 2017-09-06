@@ -37,7 +37,10 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
+    <div class="alert alert-info fixed-top" role="alert" v-if="LOCAL_ENV">
+        <i class="glyphicon glyphicon-exclamation-sign"></i>
+        <strong>Watchout!</strong> The current environement is localhost!
+    </div>
     <div id="main-container" class="container">
       <router-view
         class="view"
@@ -61,7 +64,7 @@ export default {
   data() {
     return {
       user: api.user,
-
+      LOCAL_ENV: api.LOCAL_ENV,
       activeIndex: "home"
     }
   },

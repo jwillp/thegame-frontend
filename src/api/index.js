@@ -4,7 +4,7 @@
 import router from '../router'
 
 // URL and endpoint constants
-const LOCAL_ENV = false
+const LOCAL_ENV = true
 
 var HOST
 
@@ -39,7 +39,8 @@ const GET_USERS_URL = API_URL + '/users'
 
 
 export default {
-
+  LOCAL_ENV : LOCAL_ENV,
+  
   // User object will let us check authentication status
   user: {
     username: '',
