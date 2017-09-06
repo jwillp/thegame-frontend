@@ -111,6 +111,9 @@ export default {
                 // initial loading
                 if(self.gameDataLoading) {
                     self.gameDataLoading = false
+                    if(self.game.is_finished){
+                        self.activeName = 'leaderboard'
+                    }
                 }
             }, function(response){
                 console.log(response)
