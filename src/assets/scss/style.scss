@@ -19,6 +19,29 @@
 }
 
 
+
+// STYLE //
+/* .body {
+  width: 20px;
+  height: 200px;
+  overflow: auto;
+  float: left;
+  margin: 0 10px;
+} */
+
+body::-webkit-scrollbar {
+  width: 7px;
+}
+ 
+body::-webkit-scrollbar-track {
+  background: #666;
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background: darken($brand-primary, 20%); 
+}
+
+
 #logo {
     height: 50px;
 }
