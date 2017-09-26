@@ -4,13 +4,36 @@
             <div class="panel panel-default">
               <div class="panel-body">
                 <button class="btn btn-primary" @click="dialogNewGameVisible = true">New Game</button>
+                <div class="btn-group" role="group" aria-label="filter">
+                    <button 
+                        type="button" 
+                        class="btn btn-default"  
+                        v-bind:class="[progressFilter == 'IN_PROGRESS' ? 'btn-primary' : 'btn-default' ]"
+                        v-on:click="toggleProgressFilter('IN_PROGRESS')">
+                        In progress
+                    </button>
+                    <button 
+                        type="button" 
+                        class="btn btn-default" 
+                        v-bind:class="[progressFilter == 'FINISHED' ? 'btn-primary' : 'btn-default' ]" 
+                        v-on:click="toggleProgressFilter('FINISHED')">
+                        Finished
+                    </button>
+                    <button 
+                          type="button" 
+                          class="btn" 
+                          v-bind:class="[progressFilter == 'ALL' ? 'btn-primary' : 'btn-default' ]"
+                          v-on:click="toggleProgressFilter('ALL')">
+                          All
+                    </button>
+                </div>
               </div>
             </div>
         </div> <!-- /page-controls -->
 
         <div class="games" v-loading="gameLoading"  element-loading-text="Loading...">
           
-          <div class="panel panel-default"  v-for="game in games" :key="game.id">
+          <div class="panel panel-default"  v-for="game in games" :key="game.id" v-if="canDisplayGame(game)">
             <div class="panel-body">
                 <div class="col-xs-10">
                     <h2 class="challenge-title">
@@ -61,7 +84,10 @@ export default {
             gameLoading: true,
             fetchInterval: undefined,
 
-            dialogNewGameVisible: false
+            dialogNewGameVisible: false,
+
+
+            progressFilter: 'ALL'
         }
     },
 
@@ -69,7 +95,7 @@ export default {
         document.title = 'The Game | Games'
         var self = this
         this.fetchData(true)
-        this.fetchInterval = setInterval(function(){ self.fetchData() }, 1000 * 10)
+        this.fetchInterval = setInterval(self.fetchData, 1000 * 10)
     },
 
     destroyed: function() {
@@ -77,6 +103,7 @@ export default {
     },
 
     methods: {
+        // Fetches the data from the server
         fetchData: function(force = false) {
             // lock requests so we dont spam
             if(this.fetchLock && !force) {
@@ -105,6 +132,7 @@ export default {
             })
         },
 
+        // Formats time TODO move in a util file
         format: function(date, displayTime) {
             var dateFormat = "YYYY/MM/DD"
             if(displayTime)
@@ -113,6 +141,8 @@ export default {
             return moment(date).format(dateFormat)
         },
 
+        // Inidcates how much time is left until a certain date
+        // TODO: Move in a util file
         timeLeft: function(endDate) {
             var now = moment()
             endDate = moment(endDate)
@@ -125,8 +155,29 @@ export default {
             }
         },
 
+        // Changes the current page to a game's page
         viewGame: function(game) {
             router.replace('/games/' + game.id)
+        },
+
+        // Changes the current filter
+        toggleProgressFilter: function(filter) {
+            this.progressFilter = filter;
+        },
+
+        // Indicates if a game can be displayed given the current filter
+        canDisplayGame: function(game) {
+            if(this.progressFilter == 'ALL') return true;
+
+
+
+            if(this.progressFilter == 'IN_PROGRESS' && !game.is_finished)
+                return true;
+
+            if(this.progressFilter == 'FINISHED' && game.is_finished)
+                return true;
+
+            return false;
         }
 
     },
