@@ -8,6 +8,11 @@
             <div v-for="news in newsList">
                 <NewsView :news="news"></NewsView>
             </div>
+            <div v-if="count == 0" class="panel panel-default">
+                <div class="panel-body">
+                    <p>There are no news to display ...</p>
+                </div>
+            </div>
 
         </div>
     </div>

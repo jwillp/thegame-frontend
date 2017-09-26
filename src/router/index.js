@@ -64,6 +64,17 @@ export default new Router({
       name: 'user_profile',
       component: SandboxView
     }
-  ]
+  ],
+
+
+  beforeEnter: function(el) {
+    el.style.opacity = 0;
+  },
+  enter: function(el) {
+    Velocity(el, { opacity: 1 }, { duration: 800 });
+  },
+  leave: function(el) {
+    Velocity(el, { opacity: 0 }, { duration: 800 });
+  }
 })
 

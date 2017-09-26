@@ -2,7 +2,7 @@
     <div id="game-view" v-loading="gameDataLoading">
         <div class="alert alert-warning" role="alert" v-if="game && game.is_finished">
             <i class="glyphicon glyphicon-exclamation-sign"></i>
-            <strong>Warning!</strong> The current game is finished. Therefore  some features are disabled such as creating challenge or updating scores.
+            <strong>Warning!</strong> The current game is finished. Therefore some features are disabled such as creating challenges or updating scores.
         </div>
         <div id="game-view-info">
             <div v-if="game">

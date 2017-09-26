@@ -42,12 +42,14 @@
         <strong>Watchout!</strong> The current environement is localhost!
     </div>
     <div id="main-container" class="container">
-      <router-view
-        class="view"
-        keep-alive
-        transition
-        transition-mode="out-in">
-      </router-view>
+      <transition name="fade">
+        <router-view
+          class="view"
+          keep-alive
+          transition
+          transition-mode="out-in">
+        </router-view>
+      </transition>
     </div> <!-- page wrapper -->
     
   </div><!-- #app -->
