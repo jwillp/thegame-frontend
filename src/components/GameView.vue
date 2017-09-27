@@ -151,19 +151,31 @@ export default {
 
         deleteGame: function() {
             self = this
-            api.deleteGame(this, this.game.id,  function(response) {
-                this.$notify.success({
-                  title: 'Success',
-                  message: 'The Game was successfully deleted'
-                });
-                router.replace('/')
-            }, function(response){
-                console.log(response)
-                this.$notify.error({
-                  title: 'Error',
-                  message: 'There was an error, please try again later.'
-                });
-            })
+            api.deleteGame(this.game.id,  
+
+                // SUCCESS
+                function(response) {
+                    self.$notify.success({
+                      title: 'Success',
+                      message: 'The Game was successfully deleted'
+                    });
+                    router.replace('/')
+                }, 
+
+                // ERROR
+                function(response){
+                    console.log(response)
+                    self.$notify.error({
+                      title: 'Error',
+                      message: 'There was an error, please try again later.'
+                    });
+                },
+
+                // ALWAYS
+                function(response) {
+
+                }
+            )
         },
 
         format: function(date, displayTime) {

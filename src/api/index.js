@@ -145,13 +145,15 @@ export default {
                  .then(alwaysCallback)
   },
 
-  deleteGame(context, gameId, successCallback, errorCallback) {
+  deleteGame(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.delete(DELETE_GAME_URL.replace(':id', gameId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.delete(DELETE_GAME_URL.replace(':id', gameId))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   getGameNews(context, gameId, successCallback, errorCallback) {
