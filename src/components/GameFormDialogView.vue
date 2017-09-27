@@ -148,10 +148,9 @@ export default {
         createGame: function() {
           this.gameInCreation = true
           var self = this
-          var response = api.createGame(this, this.fields,
+          api.createGame(this.fields,
               // SUCCES CALLBACK
               function(response) {
-                self.gameInCreation = false
                 self.dialogVisible = false
 
                 self.resetForm()
@@ -163,18 +162,22 @@ export default {
               },
               // ERROR CALLBACK
               function(response) {
-                self.gameInCreation = false
                 console.log(response)
-                self.errors = response.body.errors || {}
+                self.errors = response.data.errors || {}
 
-                if(!response.body.errors) {
+                if(!response.data.errors) {
                   this.$notify.error({
                     title: 'Error',
                     message: 'There was an error creating the game, please try again later.'
                   });
                 }
+              },
+
+              // always callback
+              function(response) {
+                self.gameInCreation = false
               }
-          )
+          );
         },
 
         resetForm: function() {

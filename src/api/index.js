@@ -2,6 +2,7 @@
 // Handles authentication and storage of JWT
 
 import router from '../router'
+import axios from 'axios'
 
 // URL and endpoint constants
 const LOCAL_ENV = true
@@ -48,38 +49,36 @@ export default {
   },
 
   // Send a request to the login URL and save the returned JWT
-  login(context, creds, redirect, successCallback, errorCallback) {
-    var self = this
-    var options = {
-      headers: {
-          'Authorization': 'Basic ' + btoa(creds.username + ':' + creds.password)
-        }
-    }
-    context.$http.post(LOGIN_URL, creds, options).then(
-      function(response) {
-        localStorage.setItem('token', response.body.token)
+  login(creds, redirect, successCallback, errorCallback, alwaysCallback) {
+    var self = this;
+    var ax = axios.create({
+      headers: {'Authorization': 'Basic ' + btoa(creds.username + ':' + creds.password)}
+    })
+    ax.post(LOGIN_URL)
+      .then(function(response) {
+        console.log(response)
+        localStorage.setItem('token', response.data.token)
         self.user.authenticated = true
         self.user.username = creds.username
         localStorage.setItem('username', self.user.username)
 
         successCallback(response)
 
-        // Redirect to a specified route
+        // Redirect to a specific route
         if(redirect) {
           router.push(redirect)
         }
-      },
-      // error callback
-      function(response) {
-        errorCallback(response)
-      }
-    );
+      })
+      .catch(errorCallback)
+      .then(alwaysCallback)
   },
 
   // Send data to the register url to register a user
-  register(context, creds, successCallback, errorCallback) {
-    context.$http.post(REGISTER_URL, creds)
-                 .then(successCallback, errorCallback)
+  register(creds, successCallback, errorCallback, alwaysCallback) {
+    axios.post(REGISTER_URL, creds)
+    .then(successCallback)
+    .catch(errorCallback)
+    .then(alwaysCallback)
   },
 
   // To log out, we just need to remove the token
@@ -101,143 +100,173 @@ export default {
     }
   },
 
-
-  createGame(context, data, successCallback, errorCallback) {
+  createGame(data, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.post(CREATE_GAME_URL, data, options)
-             .then(successCallback, errorCallback)
+    })
+
+    ax.post(CREATE_GAME_URL, data)
+       .then(successCallback)
+       .catch(errorCallback)
+       .then(alwaysCallback)
   },
 
-  getGames(context, successCallback, errorCallback){
+  getGames(successCallback, errorCallback, alwaysCallback){
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_GAMES_URL, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_GAMES_URL)
+      .then(successCallback)
+      .catch(errorCallback)
+      .then(alwaysCallback)
   },
 
-  getGame(context, gameId, successCallback, errorCallback) {
+  getGame(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_GAME_URL.replace(':id', gameId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_GAME_URL.replace(':id', gameId))
+        .then(successCallback)
+        .catch(errorCallback)
+        .then(alwaysCallback)
   },
 
-  updateGame(context, gameId, data, successCallback, errorCallback) {
+  updateGame(gameId, data, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.put(UPDATE_GAME_URL.replace(':id', gameId), data, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.put(UPDATE_GAME_URL.replace(':id', gameId), data)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  deleteGame(context, gameId, successCallback, errorCallback) {
+  deleteGame(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.delete(DELETE_GAME_URL.replace(':id', gameId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.delete(DELETE_GAME_URL.replace(':id', gameId))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  getGameNews(context, gameId, successCallback, errorCallback) {
+  getGameNews(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_NEWS_URL + '?gameId=' + gameId, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_NEWS_URL + '?gameId=' + gameId)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  getLeaderboard(context, gameId, successCallback, errorCallback) {
+  getLeaderboard(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_GAME_LEADERBOARD.replace(':id',  gameId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_GAME_LEADERBOARD.replace(':id',  gameId))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  getChallenges(context, gameId, successCallback, errorCallback) {
+  getChallenges(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_CHALLENGES_URL.replace(':id', gameId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_CHALLENGES_URL.replace(':id', gameId))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  createChallenge(context, gameId, data, successCallback, errorCallback) {
+  createChallenge(gameId, data, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.post(CREATE_CHALLENGE_URL.replace(':id', gameId), data, options)
-               .then(successCallback, errorCallback)
+    })
+    ax.post(CREATE_CHALLENGE_URL.replace(':id', gameId), data)
+               .then(successCallback)
+               .catch(errorCallback)
+               .then(alwaysCallback)
   },
 
-  getChallenge(context, challengeId, successCallback, errorCallback) {
+  getChallenge(challengeId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_CHALLENGE_URL.replace(':id',  challengeId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_CHALLENGE_URL.replace(':id',  challengeId))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  deleteChallenge(context, ch, successCallback, errorCallback) {
+  deleteChallenge(id, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.delete(DELETE_CHALLENGE_URL.replace(':id', ch), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.delete(DELETE_CHALLENGE_URL.replace(':id', id))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   // Completes a challenge for currently authenticated user
-  completeChallenge(context, challengeId, successCallback, errorCallback) {
+  completeChallenge(challengeId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
+    })
 
-    context.$http.post(COMPLETE_CHALLENGE_URL.replace(':id',  challengeId), {}, options)
-                 .then(successCallback, errorCallback)
+    ax.post(COMPLETE_CHALLENGE_URL.replace(':id',  challengeId), {})
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   // Cancels a challenge score for an authenticated user
-  cancelChallenge(context, challengeId, successCallback, errorCallback) {
+  cancelChallenge(challengeId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
+    })
 
-    context.$http.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {}, options)
-                 .then(successCallback, errorCallback)
+    ax.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {})
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  getNews(context, successCallback, errorCallback) {
+  getNews(successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_NEWS_URL, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_NEWS_URL)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
-  getUsers(context, successCallback, errorCallback) {
+  getUsers(successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_USERS_URL, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_USERS_URL)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   }
 }

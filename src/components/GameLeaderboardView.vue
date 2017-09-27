@@ -66,24 +66,36 @@ export default {
             }
             this.fetchLeaderboardLock = true
             var self = this
-            api.getLeaderboard(this, this.gameId,  function(response) {
+            api.getLeaderboard(this.gameId, 
 
-                self.leaderboard = response.body
+              // SUCCESS 
+              function(response) {
+
+                self.leaderboard = response.data
                 self.fetchLeaderboardLock = false
                 // initial loading
                 if(self.leaderboardDataLoading) {
                     self.leaderboardDataLoading = false
                 }
-            }, function(response){
-                console.log(response)
+              }, 
 
-                self.fetchLeaderboardLock = false
+            // ERROR
+              function(response){
+                  console.log(response)
 
-                // initial loading
-                if(self.leaderboardDataLoading) {
-                    self.leaderboardDataLoading = false
-                }
-            })
+                  self.fetchLeaderboardLock = false
+
+                  // initial loading
+                  if(self.leaderboardDataLoading) {
+                      self.leaderboardDataLoading = false
+                  }
+              },
+
+              // ALWAYS
+              function(response) {
+
+              }
+          )
         },
 
 

@@ -112,45 +112,70 @@ export default {
             }
             this.fetchGameDataLock = true
             self = this
-            api.getGame(this, this.$route.params.id,  function(response) {
-                self.game = response.body
-                self.fetchGameDataLock = false
-                document.title = 'The Game | ' + self.game.title
-                // initial loading
-                if(self.gameDataLoading) {
-                    self.gameDataLoading = false
-                    if(self.game.is_finished){
-                        self.activeName = 'leaderboard'
+            api.getGame(this.$route.params.id,  
+
+                // Success
+                function(response) {
+                    self.game = response.data
+                    self.fetchGameDataLock = false
+                    document.title = 'The Game | ' + self.game.title
+
+                    // initial loading
+                    if(self.gameDataLoading) {
+                        self.gameDataLoading = false
+                        if(self.game.is_finished){
+                            self.activeName = 'leaderboard'
+                        }
+                    }
+                }, 
+
+                // Error
+                function(response){
+                    console.log(response)
+                    self.$notify.error({
+                        title: 'Error',
+                        message: 'There was an error, please try again later.'
+                    });
+                },
+
+                // Always
+                function(response) {
+                    // initial loading
+                    if(self.gameDataLoading) {
+                        self.gameDataLoading = false
                     }
                 }
-            }, function(response){
-                console.log(response)
-                this.$notify.error({
-                  title: 'Error',
-                  message: 'There was an error, please try again later.'
-                });
-                // initial loading
-                if(self.gameDataLoading) {
-                    self.gameDataLoading = false
-                }
-            })
+
+            )
         },
 
         deleteGame: function() {
             self = this
-            api.deleteGame(this, this.game.id,  function(response) {
-                this.$notify.success({
-                  title: 'Success',
-                  message: 'The Game was successfully deleted'
-                });
-                router.replace('/')
-            }, function(response){
-                console.log(response)
-                this.$notify.error({
-                  title: 'Error',
-                  message: 'There was an error, please try again later.'
-                });
-            })
+            api.deleteGame(this.game.id,  
+
+                // SUCCESS
+                function(response) {
+                    self.$notify.success({
+                      title: 'Success',
+                      message: 'The Game was successfully deleted'
+                    });
+                    router.replace('/')
+                }, 
+
+                // ERROR
+                function(response){
+                    console.log(response)
+                    self.$notify.error({
+                      title: 'Error',
+                      message: 'There was an error, please try again later.'
+                    });
+                },
+
+                // ALWAYS
+                function(response) {
+
+                }
+            )
         },
 
         format: function(date, displayTime) {

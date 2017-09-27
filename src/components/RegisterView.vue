@@ -111,7 +111,7 @@ export default {
             }
 
             var self = this
-            var response = api.register(this, this.credentials,
+            var response = api.register(this.credentials,
                 // SUCCES CALLBACK
                 function(response) {
                     self.registration_success = true
@@ -121,7 +121,7 @@ export default {
                 function(response) {
                     console.log(response)
                     self.registrationInProgress = false
-                    self.errors = response.body.errors || {}
+                    self.errors = response.data.errors || {}
 
                     if(response.status == 500) {
                         self.errors = {

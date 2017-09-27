@@ -42,13 +42,8 @@
         <strong>Watchout!</strong> The current environement is localhost!
     </div>
     <div id="main-container" class="container">
-      <transition name="fade">
-        <router-view
-          class="view"
-          keep-alive
-          transition
-          transition-mode="out-in">
-        </router-view>
+      <transition :name="transitionName">
+        <router-view class="view"keep-alive></router-view>
       </transition>
     </div> <!-- page wrapper -->
     
@@ -67,7 +62,8 @@ export default {
     return {
       user: api.user,
       LOCAL_ENV: api.LOCAL_ENV,
-      activeIndex: "home"
+      activeIndex: "home",
+      transitionName: 'slide-right'
     }
   },
 
@@ -75,7 +71,16 @@ export default {
     handleSelect: function() {
 
     }
+  },
+
+  watch: {
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    }
   }
+
 }
 </script>
 
