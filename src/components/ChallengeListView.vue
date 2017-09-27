@@ -2,6 +2,7 @@
     <div id="challengeList-view">
         <div class="page-controls" v-if="game && !game.is_finished">
             <el-button type="primary" @click="dialogNewChallengeVisible = true">New Challenge</el-button>
+            <el-button type="primary" @click="batchDialogVisible = true">Batch Complete</el-button>
         </div> <!-- /page-controls -->
 
         <div class="challenges" v-loading="challengesLoading" element-loading-text="Loading...">
@@ -31,6 +32,10 @@
         <ChallengeFormView  v-if="!game.is_finished"
                             v-model="dialogNewChallengeVisible" 
                             :gameId="game.id"></ChallengeFormView>
+
+        <ChallengeBatchView v-if="!game.is_finished"
+                            v-model="batchDialogVisible"
+                            :challenges="challenges"></ChallengeBatchView>
     </div> <!-- /challengeList-view -->
 </template>
 
@@ -40,8 +45,11 @@ import router from '../router'
 import moment from 'moment'
 
 import ChallengeFormView from './ChallengeFormView'
+import ChallengeBatchView from './ChallengeBatchView'
 
 export default {
+
+
     data: () => {
         return {
             challenges: [],
@@ -51,7 +59,8 @@ export default {
             challengesLoading: true,
             challengeInterval: undefined,
 
-            dialogNewChallengeVisible: false
+            dialogNewChallengeVisible: false,
+            batchDialogVisible: false
         }
     },
 
@@ -105,7 +114,8 @@ export default {
     },
 
     components: {
-        ChallengeFormView
+        ChallengeFormView,
+        ChallengeBatchView
     }
 }
 </script>

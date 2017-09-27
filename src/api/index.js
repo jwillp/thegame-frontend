@@ -32,7 +32,7 @@ const DELETE_CHALLENGE_URL = API_URL + '/challenges/:id'
 const GET_CHALLENGE_URL = API_URL + '/challenges/:id'
 const COMPLETE_CHALLENGE_URL = API_URL + '/challenges/:id/complete'
 const CANCEL_CHALLENGE_URL = API_URL + '/challenges/:id/cancel'
-
+const COMPLETE_CHALLENGE_BATCH_URL = API_URL + '/challenges/complete'
 const GET_NEWS_URL = API_URL + '/events'
 
 const GET_USERS_URL = API_URL + '/users'
@@ -220,6 +220,16 @@ export default {
     }
 
     context.$http.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {}, options)
+                 .then(successCallback, errorCallback)
+  },
+
+  completeChallengeBatch: function(context, challengeIds, successCallback, errorCallback, alwaysCallback) {
+    var self = this
+        var options = {
+      headers: self.getAuthHeader()
+    }
+
+    context.$http.post(COMPLETE_CHALLENGE_BATCH_URL, {}, options)
                  .then(successCallback, errorCallback)
   },
 

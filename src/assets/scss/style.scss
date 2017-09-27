@@ -51,6 +51,90 @@ body::-webkit-scrollbar-thumb {
 
 
 
+.button-bar {
+    margin: 20px 0;
+}
+
+
+
+
+
+
+.batch-challenge-list-review {
+    max-height: 250px;
+    border: 1px solid #ccc;
+    margin: 20px 0px; 
+    overflow-y: scroll;
+
+    ul {
+        @extend .list-unstyled;        
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+    }
+}
+
+
+
+.batch-challenge-list-selection {
+    max-height: 250px;
+    min-height: 250px;
+    border: 1px solid #ccc;
+    margin: 20px 0px; 
+    overflow-y: scroll;
+
+    ul {
+        @extend .list-unstyled;        
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+
+            .row {
+                margin: 0px;
+            }
+
+            .checkbox {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                border: 1px solid darken($brand-primary, 5%);
+                border-radius: 5px;
+                text-align: center;
+                padding: 15px;
+                i {
+                    left: -11px;
+                    top: -12px;
+                    font-size: 22px;
+                }
+                &:hover {
+                    background-color: lighten($brand-primary, 35%);
+                }
+
+                &.checked {
+                    background-color: $brand-primary;
+                    color: #FFF;
+                }
+            }
+
+            .challenge-title {
+                margin: 10px;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 // Scores
 .rank-1 {
     background-color: $brand-success !important;
@@ -61,7 +145,6 @@ body::-webkit-scrollbar-thumb {
         color: #f8d106;
     }
 }
-
 
 // NEWS
 .news, .news .row {
@@ -126,6 +209,14 @@ body::-webkit-scrollbar-thumb {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.center-x {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 
 .text-warning {
     color: $brand-warning;
