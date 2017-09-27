@@ -259,12 +259,14 @@ export default {
                  .then(alwaysCallback)
   },
 
-  getUsers(context, successCallback, errorCallback) {
+  getUsers(successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_USERS_URL, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_USERS_URL)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   }
 }
