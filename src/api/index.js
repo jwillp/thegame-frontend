@@ -236,14 +236,16 @@ export default {
   },
 
   // Cancels a challenge score for an authenticated user
-  cancelChallenge(context, challengeId, successCallback, errorCallback) {
+  cancelChallenge(challengeId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
+    })
 
-    context.$http.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {}, options)
-                 .then(successCallback, errorCallback)
+    ax.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {})
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   getNews(context, successCallback, errorCallback) {

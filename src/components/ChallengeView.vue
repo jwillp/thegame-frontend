@@ -217,16 +217,23 @@ export default {
                 if(score.nb_times < 0) score.nb_times = 0
             }
 
-            api.cancelChallenge(this, this.challenge.id,
-            // success
-            function(response) {
-                this.fetchChallengeData(true)
-            },
+            var self = this;
+            api.cancelChallenge(this.challenge.id,
+                // success
+                function(response) {
+                    self.fetchChallengeData(true)
+                },
 
-            // error
-            function(response){
-                console.log(response)
-            })
+                // error
+                function(response){
+                    console.log(response)
+                },
+
+                // always
+                function(response) {
+
+                }
+            )
         },
 
         getUserScore: function() {
