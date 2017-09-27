@@ -118,11 +118,13 @@ export default {
 
     methods: {
         batchCompleteChallenge: function() {
+            var self = this
             this.processing = true;
-            api.completeChallengeBatch(this, this.selectedChallengesIds,
+            api.completeChallengeBatch({'ids': this.selectedChallengesIds},
                 // Success
                 function(response) {
-                    this.$notify({
+                    console.log(response)
+                    self.$notify({
                         title: 'Success',
                         message: 'Challenges completed successfully',
                         type: 'success'
@@ -130,18 +132,20 @@ export default {
                 }, 
 
                 // Error
-                function(err) {                  
+                function(response) {                  
                     console.log(response)
-                    this.$notify.error({
+                    self.$notify.error({
                         title: 'Error',
                         message: 'There was an error creating the challenge, please try again later.'
                     });
+                    console.log(response)
                 },
 
                 // Always
-                function() {
-                    this.processing = false;
-                    this.onCancel();
+                function(response) {
+                    self.processing = false;
+                    self.displaySelectionView();
+                    self.onCancel();
                 }
             );
         },

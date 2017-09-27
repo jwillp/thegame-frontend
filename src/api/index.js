@@ -248,14 +248,16 @@ export default {
                  .then(alwaysCallback)
   },
 
-  completeChallengeBatch: function(context, challengeIds, successCallback, errorCallback, alwaysCallback) {
+  completeChallengeBatch(challengeIds, successCallback, errorCallback, alwaysCallback) {
     var self = this
-        var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
+    })
 
-    context.$http.post(COMPLETE_CHALLENGE_BATCH_URL, {}, options)
-                 .then(successCallback, errorCallback)
+    ax.post(COMPLETE_CHALLENGE_BATCH_URL, challengeIds)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   getNews(successCallback, errorCallback, alwaysCallback) {
