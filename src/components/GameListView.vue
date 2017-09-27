@@ -116,25 +116,31 @@ export default {
             }
             this.fetchLock = true
             var self = this
-            api.getGames(this, function(response) {
-                self.games = response.body.items
-                self.count = response.body.count
-                self.fetchLock = false
-                // initial loading
-                if(self.gameLoading) {
-                    self.gameLoading = false
+            api.getGames(
+                // Success
+                function(response) {
+                    self.games = response.data.items
+                    self.count = response.data.count
+                    self.fetchLock = false
+                }, 
+
+                // Error
+                function(response){
+                    console.log(response)
+                    this.$notify.error({
+                        title: 'Error',
+                        message: 'There was an error loading games, please try again later.'
+                    });
+                },
+
+                // Always
+                function(response) {
+                    // initial loading
+                    if(self.gameLoading) {
+                        self.gameLoading = false
+                    }
                 }
-            }, function(response){
-                console.log(response)
-                this.$notify.error({
-                  title: 'Error',
-                  message: 'There was an error loading games, please try again later.'
-                });
-                // initial loading
-                if(self.gameLoading) {
-                    self.gameLoading = false
-                }
-            })
+            );
         },
 
         // Formats time TODO move in a util file

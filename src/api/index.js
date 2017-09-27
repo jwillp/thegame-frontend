@@ -100,7 +100,6 @@ export default {
     }
   },
 
-
   createGame(data, successCallback, errorCallback, alwaysCallback) {
     var self = this
     var ax = axios.create({
@@ -113,13 +112,15 @@ export default {
        .then(alwaysCallback)
   },
 
-  getGames(context, successCallback, errorCallback){
+  getGames(successCallback, errorCallback, alwaysCallback){
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_GAMES_URL, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_GAMES_URL)
+      .then(successCallback)
+      .catch(errorCallback)
+      .then(alwaysCallback)
   },
 
   getGame(context, gameId, successCallback, errorCallback) {
