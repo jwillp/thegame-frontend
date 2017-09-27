@@ -189,13 +189,15 @@ export default {
                  .then(alwaysCallback)
   },
 
-  createChallenge(context, gameId, data, successCallback, errorCallback) {
+  createChallenge(gameId, data, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.post(CREATE_CHALLENGE_URL.replace(':id', gameId), data, options)
-               .then(successCallback, errorCallback)
+    })
+    ax.post(CREATE_CHALLENGE_URL.replace(':id', gameId), data)
+               .then(successCallback)
+               .catch(errorCallback)
+               .then(alwaysCallback)
   },
 
   getChallenge(context, challengeId, successCallback, errorCallback) {
