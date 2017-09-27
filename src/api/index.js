@@ -101,13 +101,16 @@ export default {
   },
 
 
-  createGame(context, data, successCallback, errorCallback) {
+  createGame(data, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.post(CREATE_GAME_URL, data, options)
-             .then(successCallback, errorCallback)
+    })
+
+    ax.post(CREATE_GAME_URL, data)
+       .then(successCallback)
+       .catch(errorCallback)
+       .then(alwaysCallback)
   },
 
   getGames(context, successCallback, errorCallback){
