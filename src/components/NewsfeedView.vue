@@ -64,8 +64,8 @@ export default {
             var onSuccess = function(response) {
                 
                 console.log(response)
-                self.newsList = response.body.items
-                self.count = response.body.count
+                self.newsList = response.data.items
+                self.count = response.data.count
                 self.fetchLock = false
                 // initial loading
                 if(self.newsLoading) {
@@ -85,8 +85,12 @@ export default {
                 }
             }
 
+            var onAlways = function(response) {
+                
+            }
+
             if(this.gameId) {
-                api.getGameNews(this, this.gameId, onSuccess , onError);
+                api.getGameNews(this.gameId, onSuccess , onError, onAlways);
             } else {
                 api.getNews(this, onSuccess , onError);
             }

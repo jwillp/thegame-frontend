@@ -156,13 +156,15 @@ export default {
                  .then(alwaysCallback)
   },
 
-  getGameNews(context, gameId, successCallback, errorCallback) {
+  getGameNews(gameId, successCallback, errorCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_NEWS_URL + '?gameId=' + gameId, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_NEWS_URL + '?gameId=' + gameId)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   getLeaderboard(context, gameId, successCallback, errorCallback) {
