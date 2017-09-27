@@ -5,7 +5,7 @@
         <p>You may now <router-link :to="{name:'login'}">login</router-link></p>
     </div>
 
-    <div id="register-view" v-else>
+    <div id="register-view" class="well" v-else>
         <h1>Register</h1>
         <p>Create an account to be part of the game</p>
         <div class="form-error-block" v-if="errors.global">

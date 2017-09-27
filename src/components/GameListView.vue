@@ -62,6 +62,11 @@
                 </div>
             </div> <!-- /.panel-body -->
           </div> <!-- /.panel -->
+
+
+          <div class="well" v-if="games.length == 0">
+              There are no games yet ... <button class="btn btn-primary" @click="dialogNewGameVisible = true">Create one now!</button> 
+          </div>
         </div>
 
         <GameFormDialogView v-model="dialogNewGameVisible"></GameFormDialogView>
