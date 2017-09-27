@@ -2,6 +2,7 @@
 // Handles authentication and storage of JWT
 
 import router from '../router'
+import axios from 'axios'
 
 // URL and endpoint constants
 const LOCAL_ENV = true
@@ -48,38 +49,36 @@ export default {
   },
 
   // Send a request to the login URL and save the returned JWT
-  login(context, creds, redirect, successCallback, errorCallback) {
-    var self = this
-    var options = {
-      headers: {
-          'Authorization': 'Basic ' + btoa(creds.username + ':' + creds.password)
-        }
-    }
-    context.$http.post(LOGIN_URL, creds, options).then(
-      function(response) {
-        localStorage.setItem('token', response.body.token)
+  login(creds, redirect, successCallback, errorCallback, alwaysCallback) {
+    var self = this;
+    var ax = axios.create({
+      headers: {'Authorization': 'Basic ' + btoa(creds.username + ':' + creds.password)}
+    })
+    ax.post(LOGIN_URL)
+      .then(function(response) {
+        console.log(response)
+        localStorage.setItem('token', response.data.token)
         self.user.authenticated = true
         self.user.username = creds.username
         localStorage.setItem('username', self.user.username)
 
         successCallback(response)
 
-        // Redirect to a specified route
+        // Redirect to a specific route
         if(redirect) {
           router.push(redirect)
         }
-      },
-      // error callback
-      function(response) {
-        errorCallback(response)
-      }
-    );
+      })
+      .catch(errorCallback)
+      .then(alwaysCallback)
   },
 
   // Send data to the register url to register a user
-  register(context, creds, successCallback, errorCallback) {
-    context.$http.post(REGISTER_URL, creds)
-                 .then(successCallback, errorCallback)
+  register(creds, successCallback, errorCallback, alwaysCallback) {
+    axios.post(REGISTER_URL, creds)
+    .then(successCallback)
+    .catch(errorCallback)
+    .then(alwaysCallback)
   },
 
   // To log out, we just need to remove the token
