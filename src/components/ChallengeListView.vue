@@ -75,27 +75,39 @@ export default {
             }
             this.fetchLock = true
             var self = this
-            api.getChallenges(this, this.$route.params.id, function(response) {
-                self.challenges = response.body.items
-                self.count = response.body.count
-                self.fetchLock = false
-                // initial loading
-                if(self.challengesLoading) {
-                    self.challengesLoading = false
-                }
-            }, function(response){
-                console.log(response)
+            api.getChallenges(this.$route.params.id, 
 
-                this.$notify.error({
-                  title: 'Error',
-                  message: 'There was an error, please try again later.'
-                });
+                // SUCCESS
+                function(response) {
+                    self.challenges = response.data.items
+                    self.count = response.data.count
+                    self.fetchLock = false
+                    // initial loading
+                    if(self.challengesLoading) {
+                        self.challengesLoading = false
+                    }
+                }, 
 
-                // initial loading
-                if(self.challengesLoading) {
-                    self.challengesLoading = false
+                // ERROR
+                function(response){
+                    console.log(response)
+
+                    self.$notify.error({
+                      title: 'Error',
+                      message: 'There was an error, please try again later.'
+                    });
+
+                    // initial loading
+                    if(self.challengesLoading) {
+                        self.challengesLoading = false
+                    }
+                },
+
+                // ALWAYS
+                function(response) {
+
                 }
-            })
+            )
         },
 
         viewChallenge: function(challenge) {
