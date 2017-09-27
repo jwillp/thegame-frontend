@@ -188,17 +188,24 @@ export default {
             if(score) {
                 score.nb_times++;
             }
+            var self = this
+            api.completeChallenge(this.challenge.id,
+                // success
+                function(response) {
+                    self.fetchChallengeData(true)
+                },
 
-            api.completeChallenge(this, this.challenge.id,
-            // success
-            function(response) {
-                this.fetchChallengeData(true)
-            },
+                // error
+                function(response){
+                    console.log(response)
+                },
 
-            // error
-            function(response){
-                console.log(response)
-            })
+                // ALWAYS
+
+                function(response) {
+
+                }
+            )
         },
 
         cancelChallenge: function() {
