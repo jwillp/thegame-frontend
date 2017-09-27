@@ -145,19 +145,30 @@ export default {
         deleteChallenge: function() {
             self = this
             this.deleteInProgress = true
-            api.deleteChallenge(this, this.challenge.id,  function(response) {
-                this.$notify.success({
-                  title: 'Success',
-                  message: 'The Challenge was successfully deleted'
-                });
-                router.replace('/games/' + self.challenge.game.id)
-            }, function(response){
-                console.log(response)
-                this.$notify.error({
-                  title: 'Error',
-                  message: 'There was an error, please try again later.'
-                });
-            })
+            api.deleteChallenge(this.challenge.id,  
+
+                // SUCESS
+                function(response) {
+                    self.$notify.success({
+                      title: 'Success',
+                      message: 'The Challenge was successfully deleted'
+                    });
+                    router.replace('/games/' + self.challenge.game.id)
+                }, 
+                // ERROR
+                function(response){
+                    console.log(response)
+                    self.$notify.error({
+                      title: 'Error',
+                      message: 'There was an error, please try again later.'
+                    });
+                },
+
+                // ALwAYS
+                function(response) {
+
+                }
+            )
         },
 
         onDelete: function() {

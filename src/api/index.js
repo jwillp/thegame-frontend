@@ -211,13 +211,15 @@ export default {
                  .then(alwaysCallback)
   },
 
-  deleteChallenge(context, ch, successCallback, errorCallback) {
+  deleteChallenge(id, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.delete(DELETE_CHALLENGE_URL.replace(':id', ch), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.delete(DELETE_CHALLENGE_URL.replace(':id', id))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   // Completes a challenge for currently authenticated user
