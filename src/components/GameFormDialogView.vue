@@ -157,7 +157,7 @@ export default {
                 self.resetForm()
                 this.$notify({
                   title: 'Success',
-                  message: 'Challenge created successfully',
+                  message: 'Game created successfully',
                   type: 'success'
                 });
               },
