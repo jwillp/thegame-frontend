@@ -200,13 +200,15 @@ export default {
                .then(alwaysCallback)
   },
 
-  getChallenge(context, challengeId, successCallback, errorCallback) {
+  getChallenge(challengeId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_CHALLENGE_URL.replace(':id',  challengeId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_CHALLENGE_URL.replace(':id',  challengeId))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   deleteChallenge(context, ch, successCallback, errorCallback) {

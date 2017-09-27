@@ -110,24 +110,36 @@ export default {
             }
             this.fetchChallengeDataLock = true
             var self = this
-            api.getChallenge(this, this.$route.params.id,  function(response) {
-                self.challenge = response.body
-                self.fetchChallengeDataLock = false
-                document.title = 'The Game | ' + self.challenge.title
-                // initial loading
-                if(self.challengeDataLoading) {
-                    self.challengeDataLoading = false
-                }
-            }, function(response){
-                console.log(response)
+            api.getChallenge(this.$route.params.id,  
 
-                self.fetchChallengeDataLock = false
+                // SUCCESS
+                function(response) {
+                    self.challenge = response.data
+                    self.fetchChallengeDataLock = false
+                    document.title = 'The Game | ' + self.challenge.title
+                    // initial loading
+                    if(self.challengeDataLoading) {
+                        self.challengeDataLoading = false
+                    }
+                }, 
 
-                // initial loading
-                if(self.challengeDataLoading) {
-                    self.challengeDataLoading = false
+                // ERROR
+                function(response){
+                    console.log(response)
+
+                    self.fetchChallengeDataLock = false
+
+                    // initial loading
+                    if(self.challengeDataLoading) {
+                        self.challengeDataLoading = false
+                    }
+                },
+
+                // ALWAYS
+                function(response) {
+                    
                 }
-            })
+            )
         },
 
         deleteChallenge: function() {
