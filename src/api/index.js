@@ -156,7 +156,7 @@ export default {
                  .then(alwaysCallback)
   },
 
-  getGameNews(gameId, successCallback, errorCallback) {
+  getGameNews(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
     var ax = axios.create({
       headers: self.getAuthHeader()
@@ -167,13 +167,15 @@ export default {
                  .then(alwaysCallback)
   },
 
-  getLeaderboard(context, gameId, successCallback, errorCallback) {
+  getLeaderboard(gameId, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.get(GET_GAME_LEADERBOARD.replace(':id',  gameId), options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.get(GET_GAME_LEADERBOARD.replace(':id',  gameId))
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   getChallenges(context, gameId, successCallback, errorCallback) {
