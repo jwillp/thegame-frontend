@@ -75,7 +75,7 @@ export default {
 
             var onError = function(response){
                 console.log(response)
-                this.$notify.error({
+                self.$notify.error({
                   title: 'Error',
                   message: 'There was an error, please try again later.'
                 });
@@ -92,7 +92,7 @@ export default {
             if(this.gameId) {
                 api.getGameNews(this.gameId, onSuccess , onError, onAlways);
             } else {
-                api.getNews(this, onSuccess , onError);
+                api.getNews(onSuccess , onError, onAlways);
             }
         }
     },
