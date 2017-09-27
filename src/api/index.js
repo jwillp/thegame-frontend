@@ -134,13 +134,15 @@ export default {
         .then(alwaysCallback)
   },
 
-  updateGame(context, gameId, data, successCallback, errorCallback) {
+  updateGame(gameId, data, successCallback, errorCallback, alwaysCallback) {
     var self = this
-    var options = {
+    var ax = axios.create({
       headers: self.getAuthHeader()
-    }
-    context.$http.put(UPDATE_GAME_URL.replace(':id', gameId), data, options)
-                 .then(successCallback, errorCallback)
+    })
+    ax.put(UPDATE_GAME_URL.replace(':id', gameId), data)
+                 .then(successCallback)
+                 .catch(errorCallback)
+                 .then(alwaysCallback)
   },
 
   deleteGame(context, gameId, successCallback, errorCallback) {

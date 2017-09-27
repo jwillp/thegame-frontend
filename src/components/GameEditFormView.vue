@@ -204,30 +204,35 @@ export default {
           console.log(this.fields)
 
           var self = this
-          var response = api.updateGame(this, this.game.id, this.fields,
+          var response = api.updateGame(this.game.id, this.fields,
+
               // SUCCES CALLBACK
               function(response) {
                 self.formInProcess = false
-
-                this.$notify({
+                self.$notify({
                   title: 'Success',
                   message: 'Challenge created successfully',
                   type: 'success'
                 });
               },
+
               // ERROR CALLBACK
               function(response) {
                 self.formInProcess = false
                 console.log(response)
-                self.errors = response.body.errors || {}
+                self.errors = response.data.errors || {}
 
-                if(!response.body.errors) {
-                  this.$notify.error({
+                if(!self.errors) {
+                  self.$notify.error({
                     title: 'Error',
                     message: 'There was an error creating the game, please try again later.'
                   });
                 }
-              }
+              },
+
+              // ALWAYS CALLBACK
+              function(response) {
+              } 
           )
         },
     },

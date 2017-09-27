@@ -140,7 +140,6 @@ export default {
 
                 // Always
                 function(response) {
-                    console.log("ALWAYS GG");
                     // initial loading
                     if(self.gameDataLoading) {
                         self.gameDataLoading = false
