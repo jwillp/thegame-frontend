@@ -70,7 +70,7 @@ export default {
         login: function() {
             this.loginInProgress = true
             var self = this
-            var response = api.login(this, this.credentials, null,
+            var response = api.login(this.credentials, null /* redirect */,
                 // SUCCES CALLBACK
                 function(response) {
                     console.log(response)
@@ -89,13 +89,15 @@ export default {
 
                     self.loginInProgress = false
 
-                    if(response.status == 0){
+                    if(response.status == 0 || response.status == 500){
                         self.errors = ['Server Error, please try again later']
                         return;
                     }
 
                     self.errors = ['Invalid username or password']
-                }
+                },
+
+                function(response) {}
             );
         }
     }

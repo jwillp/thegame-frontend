@@ -89,7 +89,7 @@ export default {
         createChallenge: function() {
           this.challengeInCreation = true
           var self = this
-          var response = api.createChallenge(this, this.gameId, this.fields,
+          var response = api.createChallenge(this.gameId, this.fields,
               // SUCCES CALLBACK
               function(response) {
                   console.log(response)
@@ -103,24 +103,30 @@ export default {
 
                   self.resetForm()
                   // TODO Display alert success
-                  this.$notify({
+                  self.$notify({
                     title: 'Success',
                     message: 'Challenge created successfully',
                     type: 'success'
                   });
               },
+
               // ERROR CALLBACK
               function(response) {
                   console.log(response)
-                  self.errors = response.body.errors || {}
+                  self.errors = response.data.errors || {}
                   self.challengeInCreation = false
 
-                  if(!response.body.errors) {
-                    this.$notify.error({
+                  if(!response.data.errors) {
+                    self.$notify.error({
                       title: 'Error',
                       message: 'There was an error creating the challenge, please try again later.'
                     });
                   }
+              },
+
+              // ALWAYS
+              function(response) {
+
               }
           )
         },

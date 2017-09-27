@@ -56,18 +56,30 @@ export default {
           }
           this.fetchUsersLock = true
           self = this
-          api.getUsers(this, function(response) {
-            console.log("USERS RECEIVED")
-            self.availableUsers = response.body.items
-            self.fetchUsersLock = false
-          }, function(response){
-            console.log("User fetch error")
-            console.log(response)
-            this.$notify.error({
-              title: 'Error',
-              message: 'There was an error loading users, please try again later.'
-            });
-          })
+          api.getUsers(
+
+            // Success
+            function(response) {
+              console.log("USERS RECEIVED")
+              self.availableUsers = response.data.items
+              self.fetchUsersLock = false
+            }, 
+
+            // Error
+            function(response){
+              console.log("User fetch error")
+              console.log(response)
+              self.$notify.error({
+                title: 'Error',
+                message: 'There was an error loading users, please try again later.'
+              });
+            },
+
+            // Always
+            function(response) {
+              
+            }
+          )
         }
     }
 }

@@ -28,8 +28,8 @@ import api from './api'
 Vue.http.interceptors.push(function(request, next) {
   next(function(response) {
     if(response.status == 401){
-        if(response.body.errors.length != 0){
-            if(response.body.errors[0] == 'Invalid Token'){
+        if(response.data.errors.length != 0){
+            if(response.data.errors[0] == 'Invalid Token'){
                 // We need to relogin
                 api.logout()
                 this.$notify.info({

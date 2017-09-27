@@ -110,42 +110,65 @@ export default {
             }
             this.fetchChallengeDataLock = true
             var self = this
-            api.getChallenge(this, this.$route.params.id,  function(response) {
-                self.challenge = response.body
-                self.fetchChallengeDataLock = false
-                document.title = 'The Game | ' + self.challenge.title
-                // initial loading
-                if(self.challengeDataLoading) {
-                    self.challengeDataLoading = false
-                }
-            }, function(response){
-                console.log(response)
+            api.getChallenge(this.$route.params.id,  
 
-                self.fetchChallengeDataLock = false
+                // SUCCESS
+                function(response) {
+                    self.challenge = response.data
+                    self.fetchChallengeDataLock = false
+                    document.title = 'The Game | ' + self.challenge.title
+                    // initial loading
+                    if(self.challengeDataLoading) {
+                        self.challengeDataLoading = false
+                    }
+                }, 
 
-                // initial loading
-                if(self.challengeDataLoading) {
-                    self.challengeDataLoading = false
+                // ERROR
+                function(response){
+                    console.log(response)
+
+                    self.fetchChallengeDataLock = false
+
+                    // initial loading
+                    if(self.challengeDataLoading) {
+                        self.challengeDataLoading = false
+                    }
+                },
+
+                // ALWAYS
+                function(response) {
+                    
                 }
-            })
+            )
         },
 
         deleteChallenge: function() {
             self = this
             this.deleteInProgress = true
-            api.deleteChallenge(this, this.challenge.id,  function(response) {
-                this.$notify.success({
-                  title: 'Success',
-                  message: 'The Challenge was successfully deleted'
-                });
-                router.replace('/games/' + self.challenge.game.id)
-            }, function(response){
-                console.log(response)
-                this.$notify.error({
-                  title: 'Error',
-                  message: 'There was an error, please try again later.'
-                });
-            })
+            api.deleteChallenge(this.challenge.id,  
+
+                // SUCESS
+                function(response) {
+                    self.$notify.success({
+                      title: 'Success',
+                      message: 'The Challenge was successfully deleted'
+                    });
+                    router.replace('/games/' + self.challenge.game.id)
+                }, 
+                // ERROR
+                function(response){
+                    console.log(response)
+                    self.$notify.error({
+                      title: 'Error',
+                      message: 'There was an error, please try again later.'
+                    });
+                },
+
+                // ALwAYS
+                function(response) {
+
+                }
+            )
         },
 
         onDelete: function() {
@@ -165,17 +188,24 @@ export default {
             if(score) {
                 score.nb_times++;
             }
+            var self = this
+            api.completeChallenge(this.challenge.id,
+                // success
+                function(response) {
+                    self.fetchChallengeData(true)
+                },
 
-            api.completeChallenge(this, this.challenge.id,
-            // success
-            function(response) {
-                this.fetchChallengeData(true)
-            },
+                // error
+                function(response){
+                    console.log(response)
+                },
 
-            // error
-            function(response){
-                console.log(response)
-            })
+                // ALWAYS
+
+                function(response) {
+
+                }
+            )
         },
 
         cancelChallenge: function() {
@@ -187,16 +217,23 @@ export default {
                 if(score.nb_times < 0) score.nb_times = 0
             }
 
-            api.cancelChallenge(this, this.challenge.id,
-            // success
-            function(response) {
-                this.fetchChallengeData(true)
-            },
+            var self = this;
+            api.cancelChallenge(this.challenge.id,
+                // success
+                function(response) {
+                    self.fetchChallengeData(true)
+                },
 
-            // error
-            function(response){
-                console.log(response)
-            })
+                // error
+                function(response){
+                    console.log(response)
+                },
+
+                // always
+                function(response) {
+
+                }
+            )
         },
 
         getUserScore: function() {
