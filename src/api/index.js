@@ -178,12 +178,12 @@ export default {
                  .then(alwaysCallback)
   },
 
-  getChallenges(gameId, successCallback, errorCallback, alwaysCallback) {
+  getChallenges(gameId, params, successCallback, errorCallback, alwaysCallback) {
     var self = this
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
-    ax.get(GET_CHALLENGES_URL.replace(':id', gameId))
+    ax.get(GET_CHALLENGES_URL.replace(':id', gameId), { params: params })
                  .then(successCallback)
                  .catch(errorCallback)
                  .then(alwaysCallback)

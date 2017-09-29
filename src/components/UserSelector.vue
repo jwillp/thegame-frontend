@@ -49,7 +49,6 @@ export default {
 
     methods: {
         fetchUsers: function(force = false) {
-          console.log("FETCH USERS")
           // lock requests so we dont spam
           if(this.fetchUsersLock && !force) {
               return
@@ -60,15 +59,14 @@ export default {
 
             // Success
             function(response) {
-              console.log("USERS RECEIVED")
               self.availableUsers = response.data.items
               self.fetchUsersLock = false
             }, 
 
             // Error
             function(response){
-              console.log("User fetch error")
-              console.log(response)
+              console.error("User fetch error")
+              console.error(response)
               self.$notify.error({
                 title: 'Error',
                 message: 'There was an error loading users, please try again later.'

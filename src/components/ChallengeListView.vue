@@ -5,29 +5,42 @@
             <el-button type="primary" @click="batchDialogVisible = true">Batch Complete</el-button>
         </div> <!-- /page-controls -->
 
-        <div class="challenges" v-loading="challengesLoading" element-loading-text="Loading...">
-          <div class="panel panel-default"  v-for="challenge in challenges" :key="challenge.id">
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-xs-10">
-                  <h2 class="challenge-title">
-                    <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">
-                      {{ challenge.title }}
-                    </router-link>
-                  </h2>
-                  <p>{{ challenge.description }}</p>
-                  <p>Created by {{ challenge.created_by.username }}</p>
-                </div>
-                <div class="col-xs-2 text-right">
-                  <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">
-                    <h3>{{ challenge.nb_points }} pts</h3>
-                  </router-link>
-                  <!-- <el-button style="float: right;" type="primary" @click="viewGame(game)">Open</el-button> -->
-                </div>
-              </div> <!-- /.row -->
-            </div> <!-- /.panel-body -->
-          </div> <!-- /.panel -->
-        </div>
+        <div class="challenges" v-loading="initialLoadInProgress" element-loading-text="Loading...">
+            <div v-for="page in pages">
+              <div class="panel panel-default"  v-for="challenge in page.challenges" v-if="page" :key="challenge.id">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-10">
+                      <h2 class="challenge-title">
+                        <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">
+                          {{ challenge.title }}
+                        </router-link>
+                      </h2>
+                      <p>{{ challenge.description }}</p>
+                      <p>Created by {{ challenge.created_by.username }}</p>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                      <router-link :to="{name:'challenge_view', params:{ id: challenge.id }}">
+                        <h3>{{ challenge.nb_points }} pts</h3>
+                      </router-link>
+                      <!-- <el-button style="float: right;" type="primary" @click="viewGame(game)">Open</el-button> -->
+                    </div>
+                  </div> <!-- /.row -->
+                </div> <!-- /.panel-body -->
+              </div> <!-- /.panel -->
+              <button 
+                    v-if="page.number == pages.length && nextPage" 
+                    v-on:click="loadNextPage()"
+                    class="btn btn-primary" :disabled="loadMoreInProgress">
+                        <span v-if="loadMoreInProgress">
+                            Loading ...
+                        </span>
+                        <span v-else>
+                            Load more ...
+                        </span>
+            </button>
+            </div> <!-- page v for -->
+        </div> <!-- .challenges -->
 
         <ChallengeFormView  v-if="!game.is_finished"
                             v-model="dialogNewChallengeVisible" 
@@ -35,7 +48,7 @@
 
         <ChallengeBatchView v-if="!game.is_finished"
                             v-model="batchDialogVisible"
-                            :challenges="challenges"></ChallengeBatchView>
+                            :challenges="getChallenges()"></ChallengeBatchView>
     </div> <!-- /challengeList-view -->
 </template>
 
@@ -47,17 +60,29 @@ import moment from 'moment'
 import ChallengeFormView from './ChallengeFormView'
 import ChallengeBatchView from './ChallengeBatchView'
 
+
+const CHALLENGES_PER_PAGE = 10
+
 export default {
 
 
     data: () => {
         return {
-            challenges: [],
-            count: -1,
+
+            pages: [],  
+
+            // Server number of the next page of results we should load
+            // if value is null it means that there are no next page available
+            nextPage: 1, 
 
             fetchLock: false,
-            challengesLoading: true,
-            challengeInterval: undefined,
+
+            initialLoadInProgress: false,
+            loadMoreInProgress: false,
+            refreshInProgress: false,
+
+
+            refreshInterval: undefined,
 
             dialogNewChallengeVisible: false,
             batchDialogVisible: false
@@ -67,62 +92,106 @@ export default {
     props: ['game'],
 
     created: function() {
+        this.initialLoadInProgress = true;
+        this.loadNextPage();
         var self = this
-        this.fetchData(true)
-        this.challengeInterval = setInterval(function(){ self.fetchData() }, 1000 * 10)
+        this.refreshInterval = setInterval(function(){ self.refreshPages() }, 1000 * 10)
     },
 
     destroyed: function() {
-        clearInterval(this.challengeInterval)
+        clearInterval(this.refreshInterval)
     },
 
     methods: {
-        fetchData: function(force = false) {
-            // lock requests so we dont spam
-            if(this.fetchLock && !force) {
-                return
-            }
-            this.fetchLock = true
-            var self = this
-            api.getChallenges(this.$route.params.id, 
 
+        // Loads a specific page of results
+        loadPage: function(page, onSuccess) {
+            //console.info("Loading page " + page + " ...")
+            var params =  {
+                'per_page': CHALLENGES_PER_PAGE,
+                'page': page
+            }
+
+            var gameId = this.game.id;
+
+            var self = this
+            api.getChallenges(gameId, params,
                 // SUCCESS
                 function(response) {
-                    self.challenges = response.data.items
-                    self.count = response.data.count
-                    self.fetchLock = false
-                    // initial loading
-                    if(self.challengesLoading) {
-                        self.challengesLoading = false
+                    //console.info("page load success")
+                    var data = response.data;
+                    // Index are 0 based but page numbers are 1 based
+                    // therefore index of a page = pageNumber - 1
+                    self.pages[data.current_page - 1] = {
+                        // server number of the page
+                        number : parseInt(data.current_page),
+                        challenges: data.items
                     }
-                }, 
+
+                    if(onSuccess){
+                        onSuccess(response)
+                    }
+                },
 
                 // ERROR
-                function(response){
+                function(response) {
                     console.log(response)
-
                     self.$notify.error({
                       title: 'Error',
                       message: 'There was an error, please try again later.'
                     });
 
-                    // initial loading
-                    if(self.challengesLoading) {
-                        self.challengesLoading = false
-                    }
                 },
 
                 // ALWAYS
                 function(response) {
-
+                    // in all cases we are not loading results anymore
+                    self.loadMoreInProgress = false;
+                    self.refreshInProgress = false;
+                    self.initialLoadInProgress = false;
                 }
-            )
+            );
+        },
+
+        // Loads the next page of resulsts according to last server's response
+        loadNextPage: function() {
+            // If there is no next page to load we bail out
+            if(!this.nextPage) return;
+            this.loadMoreInProgress = true;
+            var self = this
+            this.loadPage(this.nextPage, function(response) {
+                // Change the next page
+                self.nextPage = response.data.next_page;
+
+                // loadMoreInProgress
+            });
+        },
+
+        // Refresh pages, refreshes all the already loaded pages
+        refreshPages: function() {
+            this.refreshInProgress = true;
+            for (var i = 0; i < this.pages.length; i++) {
+                var page = this.pages[i];
+                this.loadPage(this.page);
+            }
+        },
+
+        // Returns all the challenges
+        getChallenges: function() {
+            var challenges = []
+            for (var i = 0; i < this.pages.length; i++) {
+                var page = this.pages[i];
+                for (var j = 0; j < page.challenges.length; j++) {
+                    var challenge = page.challenges[j];
+                    challenges.push(challenge);
+                }
+            }
+            return challenges;
         },
 
         viewChallenge: function(challenge) {
             router.replace('/challenges/' + challenge.id)
         }
-
     },
 
     components: {

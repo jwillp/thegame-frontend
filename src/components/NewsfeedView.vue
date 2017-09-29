@@ -52,7 +52,6 @@ export default {
 
     methods: {
         fetchData: function(force = false) {
-            console.log('FETCH NEWS')
             // lock requests so we dont spam
             if(this.fetchLock && !force) {
                 return
@@ -62,8 +61,6 @@ export default {
             
 
             var onSuccess = function(response) {
-                
-                console.log(response)
                 self.newsList = response.data.items
                 self.count = response.data.count
                 self.fetchLock = false
@@ -74,7 +71,7 @@ export default {
             }
 
             var onError = function(response){
-                console.log(response)
+                console.error(response)
                 self.$notify.error({
                   title: 'Error',
                   message: 'There was an error, please try again later.'
