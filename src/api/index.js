@@ -5,7 +5,7 @@ import router from '../router'
 import axios from 'axios'
 
 // URL and endpoint constants
-const LOCAL_ENV = true
+const LOCAL_ENV = false
 
 var HOST
 
