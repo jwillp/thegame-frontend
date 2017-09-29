@@ -31,12 +31,37 @@ const GET_NEWS_URL = API_URL + '/events'
 const GET_USERS_URL = API_URL + '/users'
 
 
-export default {
+
+
+
+
+var api =  {
 
   // User object will let us check authentication status
   user: {
     username: '',
     authenticated: false
+  },
+
+  // Intercept requests to see if token is still valid or not
+  responseInterceptor: {
+
+      // SUCCESS
+    onSuccess: function (response) {
+        return response;
+    },
+
+    // ERROR
+    onError: function(error) {
+      // Unauthorized access
+      if(error.response.status === 401) {
+          console.log("RELOGIN");
+          // We need to relogin
+          api.logout()        
+          router.replace('/login')
+      }
+      return Promise.reject(error);
+    }
   },
 
   // Send a request to the login URL and save the returned JWT
@@ -76,6 +101,7 @@ export default {
   logout() {
     localStorage.removeItem('token')
     this.user.authenticated = false
+    console.log("logout")
   },
 
   checkAuth() {
@@ -91,12 +117,21 @@ export default {
     }
   },
 
+  // Adds an interceptor to an axios instance
+  addResponseInterceptor: function(axiosInstance) {
+
+    axiosInstance.interceptors.response.use(
+        this.responseInterceptor.onSuccess, 
+        this.responseInterceptor.onError
+    );
+  },
+
   createGame(data, successCallback, errorCallback, alwaysCallback) {
     var self = this
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
-
+    this.addResponseInterceptor(ax);
     ax.post(CREATE_GAME_URL, data)
        .then(successCallback)
        .catch(errorCallback)
@@ -108,6 +143,8 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
+
     ax.get(GET_GAMES_URL)
       .then(successCallback)
       .catch(errorCallback)
@@ -119,6 +156,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.get(GET_GAME_URL.replace(':id', gameId))
         .then(successCallback)
         .catch(errorCallback)
@@ -130,6 +168,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.put(UPDATE_GAME_URL.replace(':id', gameId), data)
                  .then(successCallback)
                  .catch(errorCallback)
@@ -141,6 +180,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.delete(DELETE_GAME_URL.replace(':id', gameId))
                  .then(successCallback)
                  .catch(errorCallback)
@@ -152,6 +192,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.get(GET_NEWS_URL + '?gameId=' + gameId, { params: params })
                  .then(successCallback)
                  .catch(errorCallback)
@@ -163,6 +204,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.get(GET_GAME_LEADERBOARD.replace(':id',  gameId))
                  .then(successCallback)
                  .catch(errorCallback)
@@ -174,6 +216,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.get(GET_CHALLENGES_URL.replace(':id', gameId), { params: params })
                  .then(successCallback)
                  .catch(errorCallback)
@@ -185,6 +228,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.post(CREATE_CHALLENGE_URL.replace(':id', gameId), data)
                .then(successCallback)
                .catch(errorCallback)
@@ -196,6 +240,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.get(GET_CHALLENGE_URL.replace(':id',  challengeId))
                  .then(successCallback)
                  .catch(errorCallback)
@@ -207,6 +252,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.delete(DELETE_CHALLENGE_URL.replace(':id', id))
                  .then(successCallback)
                  .catch(errorCallback)
@@ -219,7 +265,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
-
+    this.addResponseInterceptor(ax);
     ax.post(COMPLETE_CHALLENGE_URL.replace(':id',  challengeId), {})
                  .then(successCallback)
                  .catch(errorCallback)
@@ -232,7 +278,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
-
+    this.addResponseInterceptor(ax);
     ax.post(CANCEL_CHALLENGE_URL.replace(':id',  challengeId), {})
                  .then(successCallback)
                  .catch(errorCallback)
@@ -244,7 +290,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
-
+    this.addResponseInterceptor(ax);
     ax.post(COMPLETE_CHALLENGE_BATCH_URL, challengeIds)
                  .then(successCallback)
                  .catch(errorCallback)
@@ -256,6 +302,7 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.get(GET_NEWS_URL, { params: params })
                  .then(successCallback)
                  .catch(errorCallback)
@@ -267,9 +314,13 @@ export default {
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
+    this.addResponseInterceptor(ax);
     ax.get(GET_USERS_URL)
                  .then(successCallback)
                  .catch(errorCallback)
                  .then(alwaysCallback)
   }
 }
+
+export default api
+

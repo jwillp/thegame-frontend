@@ -37,6 +37,7 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
+        // SS_TG
         fallback: 'vue-style-loader',
         publicPath: '../../'
       })

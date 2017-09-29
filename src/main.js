@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueResource from 'vue-resource'
+import axios from 'axios'
 import api from './api'
 import config from './config'
 import ElementUI from 'element-ui'
@@ -17,7 +17,6 @@ import jQuery from 'jquery'
 window.jQuery = window.$ = jQuery
 require('bootstrap-sass')
 
-Vue.use(VueResource)
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
@@ -54,30 +53,6 @@ var console = (function(defaultConsole){
 
 //Then redefine the old console
 window.console = console;
-
-
-
-
-// Intercept ajax requests to see if token is invalid
-Vue.http.interceptors.push(function(request, next) {
-  next(function(response) {
-    if(response.status == 401){
-        if(response.data.errors.length != 0){
-            if(response.data.errors[0] == 'Invalid Token'){
-                // We need to relogin
-                api.logout()
-                this.$notify.info({
-                  title: 'Info',
-                  message: 'You have been logged out automatically'
-                });
-                router.replace('/login')
-            }
-        }
-    }
-  })
-})
-
-
 
 /* eslint-disable no-new */
 new Vue({
