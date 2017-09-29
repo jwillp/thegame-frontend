@@ -4,16 +4,28 @@
             <img src="./../assets/images/newsfeed.png" width="400px" alt="Newsfeed" class="title-image">
         </h1>
         <h2 class="text-center">Newsfeed</h2>
-        <div class="news-list" v-loading="newsLoading" element-loading-text="Loading...">
-            <div v-for="news in newsList">
-                <NewsView :news="news"></NewsView>
+        <div class="news-list" v-loading="initialLoadInProgress" element-loading-text="Loading...">
+            <div v-for="page in pages">
+                <div v-for="news in page.news">
+                    <NewsView :news="news"></NewsView>
+                </div>
+                <button 
+                    v-if="page.number == pages.length && nextPage" 
+                    v-on:click="loadNextPage()"
+                    class="btn btn-primary" :disabled="loadMoreInProgress">
+                        <span v-if="loadMoreInProgress">
+                            Loading ...
+                        </span>
+                        <span v-else>
+                            Load more ...
+                        </span>
+                </button>
             </div>
-            <div v-if="count == 0" class="panel panel-default">
+            <div v-if="pages.length == 0" class="panel panel-default">
                 <div class="panel-body">
                     <p>There are no news to display ...</p>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -24,26 +36,46 @@ import router from '../router'
 
 import NewsView from './NewsView'
 
+const NEWS_PER_PAGE = 10
+
 export default {
     props: ['gameId'],
 
     data: () => {
         return {
-            newsList: [],
-            count: -1,
+            // Pages of loaded events
+            pages: [],  
 
+            // Server number of the next page of results we should load
+            // if value is null it means that there are no next page available
+            nextPage: 1, 
+
+            // If true indicates that the first load of newsfeed is in progress
+            initialLoadInProgress: false,
+
+            // Indicates wether or not a new page is currently being loaded
+            loadMoreInProgress: false,
+
+            // Indicates wether or not the list is being currently refreshed
+            refreshInProgress: false,
+
+            // Interval object of refresh
+            refreshInterval: undefined,
 
             fetchLock: false,
             newsLoading: true,
-            fetchInterval: undefined,
+            
         }
     },
 
     created: function() {
         document.title = 'The Game | Newsfeed' 
         var self = this
-        this.fetchData(true)
-        this.fetchInterval = setInterval(function(){ self.fetchData() }, 1000 * 10)
+        this.initialLoadInProgress = true;
+        this.loadNextPage();
+
+        var self = this
+       // this.refreshInterval = setInterval(function(){ self.refreshPages() }, 1000 * 10)
     },
 
     destroyed: function() {
@@ -51,45 +83,81 @@ export default {
     },
 
     methods: {
-        fetchData: function(force = false) {
-            // lock requests so we dont spam
-            if(this.fetchLock && !force) {
-                return
-            }
-            this.fetchLock = true
-            var self = this
-            
 
+
+        // Loads a specific page of results
+        loadPage: function(page, _onSuccess) {
+            //console.info("Loading page " + page + " ...")
+
+            // Get Parameters
+            var params =  {
+                'per_page': NEWS_PER_PAGE,
+                'page': page
+            }
+
+            var self = this
+
+            // On Success functions
             var onSuccess = function(response) {
-                self.newsList = response.data.items
-                self.count = response.data.count
-                self.fetchLock = false
-                // initial loading
-                if(self.newsLoading) {
-                    self.newsLoading = false
+                //console.info("page load success")
+                var data = response.data;
+                // Index are 0 based but page numbers are 1 based
+                // therefore index of a page = pageNumber - 1
+                self.pages[data.current_page - 1] = {
+                    // server number of the page
+                    number : parseInt(data.current_page),
+                    news: data.items
+                }
+
+                if(_onSuccess){
+                    _onSuccess(response)
                 }
             }
 
-            var onError = function(response){
-                console.error(response)
+            // On Error function
+            var onError = function(response) {
+                console.log(response)
                 self.$notify.error({
                   title: 'Error',
                   message: 'There was an error, please try again later.'
                 });
-                // initial loading
-                if(self.newsLoading) {
-                    self.newsLoading = false
-                }
             }
 
+            // On Always
             var onAlways = function(response) {
-                
+                // in all cases we are not loading results anymore
+                self.loadMoreInProgress = false;
+                self.refreshInProgress = false;
+                self.initialLoadInProgress = false;
             }
 
             if(this.gameId) {
-                api.getGameNews(this.gameId, onSuccess , onError, onAlways);
+                // Game specific newsfeed
+                api.getGameNews(this.gameId, params, onSuccess , onError, onAlways);
             } else {
-                api.getNews(onSuccess , onError, onAlways);
+                // General News Feed
+                api.getNews(params, onSuccess, onError, onAlways);
+            }
+        },
+
+        // Loads the next page of resulsts according to last server's response
+        loadNextPage: function() {
+            // If there is no next page to load we bail out
+            if(!this.nextPage) return;
+            this.loadMoreInProgress = true;
+            var self = this
+            this.loadPage(this.nextPage, function(response) {
+                // Change the next page
+                self.nextPage = response.data.next_page;
+            });
+        },
+
+        // Refresh pages, refreshes all the already loaded pages
+        refreshPages: function() {
+            this.refreshInProgress = true;
+            for (var i = 0; i < this.pages.length; i++) {
+                var page = this.pages[i];
+                this.loadPage(this.page);
             }
         }
     },

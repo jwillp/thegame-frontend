@@ -5,7 +5,7 @@ import router from '../router'
 import axios from 'axios'
 
 // URL and endpoint constants
-const LOCAL_ENV = false
+const LOCAL_ENV = true
 
 var HOST
 
@@ -156,12 +156,12 @@ export default {
                  .then(alwaysCallback)
   },
 
-  getGameNews(gameId, successCallback, errorCallback, alwaysCallback) {
+  getGameNews(gameId, params, successCallback, errorCallback, alwaysCallback) {
     var self = this
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
-    ax.get(GET_NEWS_URL + '?gameId=' + gameId)
+    ax.get(GET_NEWS_URL + '?gameId=' + gameId, { params: params })
                  .then(successCallback)
                  .catch(errorCallback)
                  .then(alwaysCallback)
@@ -260,12 +260,12 @@ export default {
                  .then(alwaysCallback)
   },
 
-  getNews(successCallback, errorCallback, alwaysCallback) {
+  getNews(params, successCallback, errorCallback, alwaysCallback) {
     var self = this
     var ax = axios.create({
       headers: self.getAuthHeader()
     })
-    ax.get(GET_NEWS_URL)
+    ax.get(GET_NEWS_URL, { params: params })
                  .then(successCallback)
                  .catch(errorCallback)
                  .then(alwaysCallback)
