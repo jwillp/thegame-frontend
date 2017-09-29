@@ -76,7 +76,7 @@ export default {
                     console.log(response)
                     self.loginInProgress = false
                     router.replace('/games')
-                    this.$notify({
+                    self.$notify({
                        title: 'Success',
                        message: 'Successfully logged in',
                        type: 'success'

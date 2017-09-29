@@ -127,7 +127,7 @@ export default {
                 // Error
                 function(response){
                     console.log(response)
-                    this.$notify.error({
+                    self.$notify.error({
                         title: 'Error',
                         message: 'There was an error loading games, please try again later.'
                     });

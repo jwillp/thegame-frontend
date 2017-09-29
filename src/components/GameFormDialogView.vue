@@ -154,7 +154,7 @@ export default {
                 self.dialogVisible = false
 
                 self.resetForm()
-                this.$notify({
+                self.$notify({
                   title: 'Success',
                   message: 'Game created successfully',
                   type: 'success'
@@ -166,7 +166,7 @@ export default {
                 self.errors = response.data.errors || {}
 
                 if(!response.data.errors) {
-                  this.$notify.error({
+                  self.$notify.error({
                     title: 'Error',
                     message: 'There was an error creating the game, please try again later.'
                   });
