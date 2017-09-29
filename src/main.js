@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import api from './api'
-import env from './env'
+import config from './config'
 import ElementUI from 'element-ui'
 import './assets/scss/element-theme/index.css'
 //import 'element-ui/lib/theme-default/index.css'
@@ -30,22 +30,22 @@ Vue.config.productionTip = false
 var console = (function(defaultConsole){
     return {
         log: function(text){
-            if(env.ENV == 'dev')
+            if(config.ENV == 'dev')
                 defaultConsole.log(text);
             // Your code
         },
         info: function (text) {
-            if(env.ENV == 'dev')
+            if(config.ENV == 'dev')
                 defaultConsole.info(text);
             // Your code
         },
         warn: function (text) {
-            if(env.ENV == 'dev')
+            if(config.ENV == 'dev')
                 defaultConsole.warn(text);
             // Your code
         },
         error: function (text) {
-            if(env.ENV == 'dev')
+            if(config.ENV == 'dev')
                 defaultConsole.error(text);
             // Your code
         }
@@ -54,6 +54,9 @@ var console = (function(defaultConsole){
 
 //Then redefine the old console
 window.console = console;
+
+
+
 
 // Intercept ajax requests to see if token is invalid
 Vue.http.interceptors.push(function(request, next) {

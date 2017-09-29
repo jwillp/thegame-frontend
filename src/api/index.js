@@ -1,21 +1,13 @@
 // Service to connect to thegame api server
 // Handles authentication and storage of JWT
 
+import config from '../config'
+
 import router from '../router'
 import axios from 'axios'
 
-// URL and endpoint constants
-const LOCAL_ENV = true
 
-var HOST
-
-if (LOCAL_ENV) {
-  HOST = 'http://localhost/thegame-backend/web'
-} else {
-  HOST = 'http://138.197.145.66/thegame-backend/web'
-}
-
-const API_URL = HOST + '/api'
+const API_URL = config.HOST + '/api'
 
 const LOGIN_URL = API_URL + '/users/login'
 const REGISTER_URL = API_URL + '/users/register'
@@ -40,8 +32,7 @@ const GET_USERS_URL = API_URL + '/users'
 
 
 export default {
-  LOCAL_ENV : LOCAL_ENV,
-  
+
   // User object will let us check authentication status
   user: {
     username: '',

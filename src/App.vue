@@ -37,10 +37,13 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+
+
     <div class="alert alert-info fixed-top" role="alert" v-if="LOCAL_ENV">
         <i class="glyphicon glyphicon-exclamation-sign"></i>
-        <strong>Watchout!</strong> The current environement is localhost!
+        <strong>Watchout!</strong> The current server environement is localhost!
     </div>
+
     <div id="main-container" class="container">
       <transition :name="transitionName">
         <router-view class="view"keep-alive></router-view>
@@ -51,6 +54,7 @@
 </template>
 
 <script>
+import config from './config'
 import api from './api'
 
 // Check the users auth status when the app starts
@@ -61,7 +65,7 @@ export default {
   data() {
     return {
       user: api.user,
-      LOCAL_ENV: api.LOCAL_ENV,
+      LOCAL_ENV: config.HOST.includes('localhost'),
       activeIndex: "home",
       transitionName: 'slide-right'
     }
